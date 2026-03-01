@@ -10,12 +10,6 @@ class Jeu():
         for j in range(self.nbjoueur):
             self.joueurs[j] = Joueur(self.villes.depart)
 
-    def TrouverVille(self, x, y):
-        for idville in self.villes.dict:
-            if math.dist((x,y), self.villes.dict[idville]) < 0.5:
-                return idville
-        return False
-
     def ChoixVille(self, idjoueur, idville):
         self.joueurs[idjoueur].ChoixVille(idville)
 

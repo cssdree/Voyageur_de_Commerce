@@ -9,6 +9,19 @@ class Villes():
         self.ids = list(self.dict.keys())
         self.coords = list(self.dict.values())
 
+    def TrouverVille(self, x, y):
+        for idville in self.dict:
+            if math.dist((x,y), self.dict[idville]) < 0.5:
+                return idville
+        return False
+
+    def TrouverPlusProcheVille(self, c, l):
+        nearest = random.choice(self.ids)
+        for idville in self.dict:
+            if math.dist((c, l), self.dict[idville]) < math.dist((c, l), self.dict[nearest]):
+                nearest = self.dict[idville]
+        return nearest
+
 
 def VilleAcceptable(c, l, dict_villes):
     coords = set(dict_villes.values())

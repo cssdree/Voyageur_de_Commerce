@@ -6,8 +6,7 @@ class Villes():
     def __init__(self, dict_villes, depart):
         self.dict = dict_villes
         self.depart = depart
-        self.ids = list(self.dict.keys())
-        self.coords = list(self.dict.values())
+        self.set_id = set(self.dict.keys())
 
     def TrouverVille(self, x, y):
         for idville in self.dict:
@@ -15,11 +14,11 @@ class Villes():
                 return idville
         return False
 
-    def TrouverPlusProcheVille(self, c, l):
-        nearest = random.choice(self.ids)
-        for idville in self.dict:
-            if math.dist((c, l), self.dict[idville]) < math.dist((c, l), self.dict[nearest]):
-                nearest = self.dict[idville]
+    def TrouverPlusProcheVille(self, ville_actuelle, villes_possibles):
+        nearest = random.choice(list(villes_possibles))
+        for idville in villes_possibles:
+            if math.dist(self.dict[ville_actuelle], self.dict[idville]) < math.dist(self.dict[ville_actuelle], self.dict[nearest]):
+                nearest = idville
         return nearest
 
 

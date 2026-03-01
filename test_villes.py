@@ -14,6 +14,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(villes.TrouverVille(x=6.49, y=9), 2)
         self.assertEqual(villes.TrouverVille(x=5, y=5), False)
 
+    def test_trouver_bonne_proche_ville(self):
+        villes = Villes(dict_villes={0:(1,1), 1:(1,4), 2:(6,9), 3:(8,3)}, depart=0)
+        self.assertEqual(villes.TrouverPlusProcheVille(0, villes_possibles={1, 2, 3}), 1)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,3 +1,4 @@
+from joueurs import Joueur
 import math
 
 
@@ -5,18 +6,20 @@ class Jeu():
     def __init__(self, nbjoueur, villes, depart):
         self.nbjoueur = nbjoueur
         self.villes = villes
-        self.parcours = [depart]
-        self.visitees = {depart}
+        self.joueurs = {}
+        for j in range(self.nbjoueur):
+            self.joueurs[j] = Joueur(0)
 
     def ChoixVille(self, idjoueur, idville):
-        if idville in self.visitees:
-            raise PermissionError("Ville déjà visitées")
-        self.parcours.append(idville)
-        self.visitees.add(idville)
+        self.joueurs[idjoueur].ChoixVille(idville)
 
     def Score(self, idjoueur):
-        score = 0
-        for v in range(1, len(self.parcours)):
-            distance = math.dist(self.villes[self.parcours[v]], self.villes[self.parcours[v-1]])
-            score += distance
-        return score
+        return self.joueurs[idjoueur].Score(self.villes)
+
+    def Gagnant(self):
+        scores = {}
+        for j in range(self.nbjoueur):
+            score = self.Score(j)
+            scores[score] = j
+        best_score = min(list(scores.keys()))
+        return scores[best_score]

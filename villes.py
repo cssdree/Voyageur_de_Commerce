@@ -6,7 +6,7 @@ class Villes():
     def __init__(self, dict_villes, depart):
         self.dict = dict_villes
         self.depart = depart
-        self.set_id = set(self.dict.keys())
+        self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
     def TrouverVille(self, x, y):
         for idville in self.dict:
@@ -20,6 +20,12 @@ class Villes():
             if math.dist(self.dict[ville_actuelle], self.dict[idville]) < math.dist(self.dict[ville_actuelle], self.dict[nearest]):
                 nearest = idville
         return nearest
+
+    #def DistanceTotaleParcours(self, parcours):
+        distance = 0
+        for v in range(1, len(parcours)):
+            distance += math.dist(self.dict[parcours[v]], self.dict[parcours[v-1]])
+        return distance
 
 
 def VilleAcceptable(c, l, dict_villes):

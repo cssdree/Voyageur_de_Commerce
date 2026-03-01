@@ -12,9 +12,8 @@ class Joueur():
         self.parcours.append(idville)
         self.visitees.add(idville)
 
-    def Score(self, dict_villes):
+    def Score(self, villes):
         score = 0
         for v in range(1, len(self.parcours)):
-            distance = math.dist(dict_villes[self.parcours[v]], dict_villes[self.parcours[v-1]])
-            score += distance
+            score += math.dist(villes[self.parcours[v]], villes[self.parcours[v-1]])
         return score

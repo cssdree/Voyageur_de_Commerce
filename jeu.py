@@ -1,5 +1,4 @@
 from joueurs import Joueur
-import math
 
 
 class Jeu():

@@ -1,7 +1,6 @@
+from jeu import Jeu
 import unittest
 import math
-
-from jeu import Jeu
 
 
 class TestJeu(unittest.TestCase):
@@ -9,6 +8,7 @@ class TestJeu(unittest.TestCase):
         jeu = Jeu(nbjoueur=1, villes=[(0, 0), (1,1), (6,6)])
         jeu.ChoixVille(joueur=1, idville=1)
         jeu.ChoixVille(joueur=1, idville=0)
+        self.assertEqual(math.sqrt(2), jeu.Score(joueur=1))
         jeu.ChoixVille(joueur=1, idville=2)
         self.assertEqual(7*math.sqrt(2), jeu.Score(joueur=1))  # add assertion here
 

@@ -1,5 +1,6 @@
 import math
 
+
 class Jeu():
     def __init__(self, nbjoueur, villes):
         self.nbjoueur = nbjoueur

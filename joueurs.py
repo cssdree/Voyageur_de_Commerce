@@ -1,5 +1,6 @@
 import math
 
+
 class Joueur():
     def __init__(self, depart):
         self.parcours = [depart]

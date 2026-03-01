@@ -1,4 +1,4 @@
-from jeu import Jeu
+from jeu import Jeu, VilleAcceptable
 import unittest
 import math
 
@@ -31,6 +31,11 @@ class TestJeu(unittest.TestCase):
         self.assertEqual(15*math.sqrt(2), jeu.Score(idjoueur=0))
         self.assertEqual(8*math.sqrt(2), jeu.Score(idjoueur=1))
         self.assertEqual(1, jeu.Gagnant())
+
+    def test_ville_acceptable(self):
+        self.assertEqual(VilleAcceptable(1, 4, {0:(1,1), 1:(1,4)}), False)
+        self.assertEqual(VilleAcceptable(1.2,1, {0:(1,1), 1:(1,4)}), False)
+
 
 if __name__ == '__main__':
     unittest.main()

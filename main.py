@@ -7,5 +7,5 @@ NBJ = 2
 NBV = 3
 
 
-villes, depart = CreationAleatoireVilles(TAILLE_PLAN, NBV)
-jeu = Jeu(NBJ, villes, depart)
+#villes, depart = CreationAleatoireVilles(TAILLE_PLAN, NBV)
+#jeu = Jeu(NBJ, villes, depart)

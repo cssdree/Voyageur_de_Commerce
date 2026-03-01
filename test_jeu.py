@@ -33,9 +33,15 @@ class TestJeu(unittest.TestCase):
         self.assertEqual(1, jeu.Gagnant())
 
     def test_ville_acceptable(self):
+        self.assertEqual(VilleAcceptable(3, 3, {0:(1,1), 1:(1,4)}), True)
         self.assertEqual(VilleAcceptable(1, 4, {0:(1,1), 1:(1,4)}), False)
         self.assertEqual(VilleAcceptable(1.2,1, {0:(1,1), 1:(1,4)}), False)
 
+    def test_trouver_bonne_ville(self):
+        jeu = Jeu(nbjoueur=2, villes={0:(1,1), 1:(1,4), 2:(6,9), 3:(8,3)}, depart=0)
+        self.assertEqual(jeu.TrouverVille(1,4), 1)
+        self.assertEqual(jeu.TrouverVille(6.49, 9), 2)
+        self.assertEqual(jeu.TrouverVille(5,5), False)
 
 if __name__ == '__main__':
     unittest.main()

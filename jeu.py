@@ -11,6 +11,12 @@ class Jeu():
         for j in range(self.nbjoueur):
             self.joueurs[j] = Joueur(depart)
 
+    def TrouverVille(self, x, y):
+        for idville in self.villes:
+            if math.dist((x,y), self.villes[idville]) < 0.5:
+                return idville
+        return False
+
     def ChoixVille(self, idjoueur, idville):
         self.joueurs[idjoueur].ChoixVille(idville)
 
@@ -33,7 +39,7 @@ def CreationAleatoireVilles(taille_plan, nbville):
         c = round(random.uniform(0,taille_plan-0.8), 3)
         l = round(random.uniform(0,taille_plan-0.8), 3)
         coord = (c, l)
-        if coord not in set(villes.values()):
+        if VilleAcceptable(c, l, villes):
             villes[v] = coord
             v += 1
     depart = random.randrange(0,len(villes))
@@ -41,7 +47,9 @@ def CreationAleatoireVilles(taille_plan, nbville):
 
 
 def VilleAcceptable(c, l, villes):
-    coord_villes = villes.values()
+    coord_villes = set(villes.values())
+    if (c, l) in coord_villes:
+        return False
     for coord_ville in coord_villes:
         if math.dist((c, l), coord_ville) < 1:
             return False

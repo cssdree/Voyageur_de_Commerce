@@ -27,8 +27,8 @@ class ParcoursRecursif():
                 self.meilleur_parcours_recursif = (parcours_recursif, distance_recursive)
             return
         for idville in villes_possibles:
-            nouvelle_distance_recusrive = distance_recursive + math.dist(self.villes.dict[parcours_recursif[-1]], self.villes.dict[idville])
-            self.RechercheRecursive(villes_possibles-{idville}, parcours_recursif+[idville], nouvelle_distance_recusrive)
+            nouvelle_distance_recursive = distance_recursive + math.dist(self.villes.dict[parcours_recursif[-1]], self.villes.dict[idville])
+            self.RechercheRecursive(villes_possibles-{idville}, parcours_recursif+[idville], nouvelle_distance_recursive)
 
     def ResultatRecursif(self):
         self.RechercheRecursive(self.villes.villes_initiales_possibles, [self.villes.depart], 0)

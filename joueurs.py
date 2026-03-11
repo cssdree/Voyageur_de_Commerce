@@ -3,8 +3,9 @@ import math
 
 class Joueur():
     def __init__(self, depart):
-        self.parcours = [depart]
-        self.visitees = {depart}
+        self.depart = depart
+        self.parcours = [self.depart]
+        self.visitees = {self.depart}
 
     def ChoixVille(self, idville):
         if idville in self.visitees:
@@ -12,8 +13,8 @@ class Joueur():
         self.parcours.append(idville)
         self.visitees.add(idville)
 
-    def Score(self, villes):
-        score = 0
-        for v in range(1, len(self.parcours)):
-            score += math.dist(villes[self.parcours[v]], villes[self.parcours[v-1]])
-        return score
+    def ScoreEnCours(self, villes):
+        return villes.DistanceTotaleParcours(self.parcours)
+
+    def ScoreFinal(self, villes):
+        return villes.DistanceTotaleParcours(self.parcours+[self.depart])

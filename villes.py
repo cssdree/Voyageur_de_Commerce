@@ -21,7 +21,7 @@ class Villes():
                 nearest = idville
         return nearest
 
-    #def DistanceTotaleParcours(self, parcours):
+    def DistanceTotaleParcours(self, parcours):
         distance = 0
         for v in range(1, len(parcours)):
             distance += math.dist(self.dict[parcours[v]], self.dict[parcours[v-1]])

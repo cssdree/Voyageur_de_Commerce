@@ -12,13 +12,16 @@ class Jeu():
     def ChoixVille(self, idjoueur, idville):
         self.joueurs[idjoueur].ChoixVille(idville)
 
-    def Score(self, idjoueur):
-        return self.joueurs[idjoueur].Score(self.villes.dict)
+    def ScoreEnCours(self, idjoueur):
+        return self.joueurs[idjoueur].ScoreEnCours(self.villes)
+
+    def ScoreFinal(self, idjoueur):
+        return self.joueurs[idjoueur].ScoreFinal(self.villes)
 
     def Gagnant(self):
         scores = {}
         for j in range(self.nbjoueur):
-            score = self.Score(j)
+            score = self.ScoreFinal(j)
             scores[score] = j
         best_score = min(list(scores.keys()))
         return scores[best_score]

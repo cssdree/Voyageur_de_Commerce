@@ -22,7 +22,8 @@ class MyTestCase(unittest.TestCase):
 
     def test_heuristique_2OPT(self):
         villes = Villes(dict_villes={0:(1,5), 1:(4,3), 2:(3,1), 3:(5,9)}, depart=0)
-        self.assertEqual(Heuristique2OPT(villes), [0, 2, 1, 3, 0])
+        parcours = HeuristiqueGloutonne(villes)
+        self.assertEqual(Heuristique2OPT(villes, parcours), [0, 2, 1, 3, 0])
 
 
 if __name__ == '__main__':

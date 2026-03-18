@@ -23,6 +23,8 @@ class MenuGraphique():
         self.ChoixCheapest = self.fenetre.afficherImage(2*self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
         self.ChoixRecursif = self.fenetre.afficherImage(3*self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
         self.ChoixAutre = self.fenetre.afficherImage(4*self.longueur_option, 0, "Images/autre.png", self.longueur_option, self.hauteur_option)
+        self.Choix2OPT = self.fenetre.dessinerRectangle(20, 820, 150, 60, "white")
+        self.fenetre.dessinerRectangle(730, 820, 150, 60, "white")
 
 
     def initVilles(self):
@@ -57,6 +59,8 @@ class JeuGraphique():
     def initJeu(self):
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
+        self.score_joueur_0 = self.fenetre.afficherTexte("0", 95, 850, "black")
+        self.score_joueur_1 = self.fenetre.afficherTexte("0", 805, 850, "Black")
 
 
     def LancerJeu(self):
@@ -64,16 +68,15 @@ class JeuGraphique():
             chemins = []
             while len(self.jeu.joueurs[idjoueur].parcours) < len(self.villes.dict):
                 self.ChoixVille(idjoueur)
-                chemin = self.DessinerChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
+                chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
-                print(self.jeu.ScoreEnCours(idjoueur))
-            dernier_chemin = self.DessinerChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
+                self.AfficherScore(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
+            dernier_chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
             chemins.append(dernier_chemin)
-            print(f"SCORE FINAL : {self.jeu.ScoreFinal(idjoueur)}")
-            self.fenetre.pause(2)
+            self.AfficherScore(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
+            self.fenetre.pause(1)
             for chemin in chemins :
                 self.fenetre.supprimer(chemin)
-        print(f"GAGNANT : JOUEUR {self.jeu.Gagnant()+1}")
 
 
     def ChoixVille(self, idjoueur):
@@ -85,15 +88,24 @@ class JeuGraphique():
         self.jeu.ChoixVille(idjoueur, int(choix_logique_ville))
 
 
-    def DessinerChemin(self, ancienne_ville, nouvelle_ville):
+    def AfficherChemin(self, ancienne_ville, nouvelle_ville):
         chemin = self.fenetre.dessinerLigne(self.villes.dict[ancienne_ville][0], self.villes.dict[ancienne_ville][1], self.villes.dict[nouvelle_ville][0], self.villes.dict[nouvelle_ville][1], "white", 5)
         self.fenetre.actualiser()
         return chemin
 
 
+    def AfficherScore(self, idjoueur, score):
+        if idjoueur == 0:
+            self.fenetre.changerTexte(self.score_joueur_0, score)
+        if idjoueur == 1:
+            self.fenetre.changerTexte(self.score_joueur_1, score)
+        self.fenetre.actualiser()
+
+
 def DessinerParcours(fenetre, villes, parcours):
     for posville in range(len(parcours)-1):
         fenetre.dessinerLigne(villes.dict[parcours[posville]][0], villes.dict[parcours[posville]][1], villes.dict[parcours[posville+1]][0], villes.dict[parcours[posville+1]][1], "white", 5)
+
 
 
 class HeuristiqueGraphique():
@@ -107,8 +119,9 @@ class HeuristiqueGraphique():
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
         parcours = self.Heuristique(self.villes)
+        distance = round(self.villes.DistanceTotaleParcours(parcours))
         DessinerParcours(self.fenetre, self.villes, parcours)
-        print(self.villes.DistanceTotaleParcours(parcours))
+        self.fenetre.afficherTexte(distance, 805, 850, "black")
 
 
 
@@ -124,5 +137,6 @@ class RecursifGraphique():
         self.menu.initPlateau()
         parcours_recursif = self.Heuristique(self.villes)
         resultat_recursif = parcours_recursif.ResultatRecursif()
+        distance = round(self.villes.DistanceTotaleParcours(resultat_recursif))
         DessinerParcours(self.fenetre, self.villes, resultat_recursif)
-        print(self.villes.DistanceTotaleParcours(resultat_recursif))
+        self.fenetre.afficherTexte(distance, 805, 850, "black")

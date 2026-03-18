@@ -5,16 +5,18 @@ from graphisme import *
 
 
 NBJ = 2
-NBV = 8
+NBV = 10
 TAILLE_PLAN = 900
 TAILLE_VILLE = 110
-HAUTEUR_OPTION = 60
+HAUTEUR_OPTION = 70
 LONGUEUR_OPTION = 180
 
 
 villes = CreationAleatoireVilles(NBV, TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION)
 M = MenuGraphique(TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION, LONGUEUR_OPTION, villes)
 M.initPlateau()
+
+dernier_choix = None
 while True:
     choix = M.ChoixMenu()
     if choix == "Jeu":
@@ -31,3 +33,11 @@ while True:
     elif choix == "Recursif":
         RG = RecursifGraphique(villes, M, ParcoursRecursif)
         RG.initRecursif()
+    elif choix == "2opt":
+        if dernier_choix=="Greedy":
+            None
+        elif dernier_choix=="Cheapest":
+            None
+        else :
+            None
+    dernier_choix = choix

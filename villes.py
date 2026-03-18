@@ -37,7 +37,7 @@ def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
     coords = set(dict_villes.values())
     if VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
         return False
-    if VilleDansOptions(y, hauteur_option):
+    if VilleDansOptions(y, hauteur_option) or VilleDansRondins(x, y):
         return False
     if (x, y) in coords:
         return False
@@ -62,12 +62,16 @@ def VilleDansOptions(y, hauteur_option):
     return y < hauteur_option*2.5
 
 
+def VilleDansRondins(x, y):
+    return (x > 690) and (y > 790)
+
+
 def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):
     dict_villes = {}
     v = 0
     while len(dict_villes) < nbville:
         x = round(random.uniform(100,taille_plan-100), 3)
-        y= round(random.uniform(100,taille_plan-100), 3)
+        y = round(random.uniform(100,taille_plan-100), 3)
         coord = (x, y)
         if VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
             dict_villes[v] = coord

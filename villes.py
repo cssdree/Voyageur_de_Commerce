@@ -9,10 +9,12 @@ class Villes():
         self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
 
-    def TrouverVille(self, x, y):
+    def TrouverVilleAcceptable(self, x, y, visitees):
         for idville in self.dict:
-            if math.dist((x,y), self.dict[idville]) < 100:
-                return str(idville)
+            if (math.dist((x,y), self.dict[idville]) < 100):
+                if idville not in visitees:
+                    return str(idville)
+                return False
         return False
 
 
@@ -57,7 +59,7 @@ def VilleDansTriangle(ville, a, b, c):
 
 
 def VilleDansOptions(y, hauteur_option):
-    return y < hauteur_option*1.5
+    return y < hauteur_option*3
 
 
 def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):

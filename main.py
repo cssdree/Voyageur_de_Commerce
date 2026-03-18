@@ -1,29 +1,32 @@
 from villes import CreationAleatoireVilles
-from graphisme import MenuGraphique, JeuGraphique
 from jeu import JeuLogique
+from graphisme import *
 
 
 NBJ = 2
-NBV = 7
+NBV = 8
 TAILLE_PLAN = 900
-TAILLE_VILLE = 120
+TAILLE_VILLE = 110
 HAUTEUR_OPTION = 50
 LONGUEUR_OPTION = 225
 
 
 villes = CreationAleatoireVilles(NBV, TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION)
-M = MenuGraphique(TAILLE_PLAN, HAUTEUR_OPTION, LONGUEUR_OPTION)
-M.initMenu()
+M = MenuGraphique(TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION, LONGUEUR_OPTION, villes)
+M.initPlateau()
 while True:
     choix = M.ChoixMenu()
     if choix == "Jeu":
-        L = JeuLogique(villes, NBJ)
-        G = JeuGraphique(TAILLE_VILLE, villes, M, L)
-        G.initJeu()
-        G.LancerJeu()
+        JL = JeuLogique(villes, NBJ)
+        JG = JeuGraphique(villes, M, JL)
+        JG.initJeu()
+        JG.LancerJeu()
     elif choix == "Greedy":
-        None
+        GG = GreedyGraphique(villes, M)
+        GG.initGreedy()
     elif choix == "Cheapest":
-        None
+        CG = CheapestGraphique(villes, M)
+        CG.initCheapest()
     elif choix == "Recursif":
-        None
+        RG = RecursifGraphique(villes, M)
+        RG.initRecursif()

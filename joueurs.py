@@ -8,8 +8,6 @@ class Joueur():
 
 
     def ChoixVille(self, idville):
-        if idville in self.visitees:
-            raise PermissionError("Ville déjà visitées")
         self.parcours.append(idville)
         self.visitees.add(idville)
 

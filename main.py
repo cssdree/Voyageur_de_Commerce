@@ -31,13 +31,10 @@ while True:
         HG = HeuristiqueGraphique(villes, M, HeuristiqueCheapestInsertion)
         HG.initHeuristique()
     elif choix == "Recursif":
-        RG = RecursifGraphique(villes, M, ParcoursRecursif)
-        RG.initRecursif()
-    elif choix == "2opt":
-        if dernier_choix=="Greedy":
-            None
-        elif dernier_choix=="Cheapest":
-            None
-        else :
-            None
+        HG = HeuristiqueGraphique(villes, M, ParcoursRecursif)
+        HG.initRecursif()
+    elif choix == "2OPT":
+        if dernier_choix=="Greedy" or dernier_choix=="Cheapest":
+            HG = HeuristiqueGraphique(villes, M, Heuristique2OPT, dernier_choix)
+            HG.init2OPT()
     dernier_choix = choix

@@ -2,21 +2,19 @@ import random
 import math
 
 
-TAILLE_VILLE = 110
-HAUTEUR_OPTION = 50
-
-
 class Villes():
     def __init__(self, dict_villes, depart):
         self.dict = dict_villes
         self.depart = depart
         self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
+
     def TrouverVille(self, x, y):
         for idville in self.dict:
             if math.dist((x,y), self.dict[idville]) < 100:
-                return str(idville) ### ARRANGER DANS LE TEST
+                return str(idville)
         return False
+
 
     def TrouverPlusProcheVille(self, ville_actuelle, villes_possibles):
         nearest = random.choice(list(villes_possibles))
@@ -25,6 +23,7 @@ class Villes():
                 nearest = idville
         return nearest
 
+
     def DistanceTotaleParcours(self, parcours):
         distance = 0
         for v in range(1, len(parcours)):
@@ -32,16 +31,16 @@ class Villes():
         return distance
 
 
-def VilleAcceptable(x, y, dict_villes):
+def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
     coords = set(dict_villes.values())
     if VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
         return False
-    if VilleDansOptions(y):
+    if VilleDansOptions(y, hauteur_option):
         return False
     if (x, y) in coords:
         return False
     for coord in coords:
-        if math.dist((x, y), coord) < TAILLE_VILLE+(TAILLE_VILLE / 2):
+        if math.dist((x, y), coord) < taille_ville+(taille_ville/2):
             return False
     return True
 
@@ -57,18 +56,18 @@ def VilleDansTriangle(ville, a, b, c):
     return not (has_neg and has_pos)
 
 
-def VilleDansOptions(y):
-    return y < HAUTEUR_OPTION*1.5
+def VilleDansOptions(y, hauteur_option):
+    return y < hauteur_option*1.5
 
 
-def CreationAleatoireVilles(taille_plan, nbville):
+def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):
     dict_villes = {}
     v = 0
     while len(dict_villes) < nbville:
         x = round(random.uniform(100,taille_plan-100), 3)
         y= round(random.uniform(100,taille_plan-100), 3)
         coord = (x, y)
-        if VilleAcceptable(x, y, dict_villes):
+        if VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))

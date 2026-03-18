@@ -9,14 +9,18 @@ class JeuLogique():
         for j in range(self.nbjoueur):
             self.joueurs[j] = Joueur(self.villes.depart)
 
+
     def ChoixVille(self, idjoueur, idville):
         self.joueurs[idjoueur].ChoixVille(idville)
+
 
     def ScoreEnCours(self, idjoueur):
         return self.joueurs[idjoueur].ScoreEnCours(self.villes)
 
+
     def ScoreFinal(self, idjoueur):
         return self.joueurs[idjoueur].ScoreFinal(self.villes)
+
 
     def Gagnant(self):
         scores = {}

@@ -1,23 +1,21 @@
 from tkiteasy import *
 
 
-TAILLE_VILLE = 110
-LONGUEUR_OPTION = 225
-HAUTEUR_OPTION = 50
-
-
 class MenuGraphique():
-    def __init__(self, taille):
+    def __init__(self, taille, hauteur_option, longueur_option):
         self.taille = taille
+        self.hauteur_option = hauteur_option
+        self.longueur_option = longueur_option
         self.fenetre = ouvrirFenetre(self.taille, self.taille)
 
+
     def initMenu(self):
-        self.fenetre.afficherImage(0, 0, "Images/fond.png", 900, 900)
-        self.fenetre.dessinerLigne(0, 100, 900, 100, "white", 10)
-        self.ChoixJeu = self.fenetre.dessinerRectangle(0*LONGUEUR_OPTION, 0, LONGUEUR_OPTION, HAUTEUR_OPTION, "white")
-        self.ChoixGreedy = self.fenetre.dessinerRectangle(1*LONGUEUR_OPTION, 0, LONGUEUR_OPTION, HAUTEUR_OPTION, "pink")
-        self.ChoixCheapest = self.fenetre.dessinerRectangle(2*LONGUEUR_OPTION, 0, LONGUEUR_OPTION, HAUTEUR_OPTION, "blue")
-        self.ChoixRecursif = self.fenetre.dessinerRectangle(3*LONGUEUR_OPTION, 0, LONGUEUR_OPTION, HAUTEUR_OPTION, "green")
+        self.fenetre.afficherImage(0, 0, "Images/fond.png", self.taille, self.taille)
+        self.ChoixJeu = self.fenetre.dessinerRectangle(0*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "white")
+        self.ChoixGreedy = self.fenetre.dessinerRectangle(1*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "pink")
+        self.ChoixCheapest = self.fenetre.dessinerRectangle(2*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "white")
+        self.ChoixRecursif = self.fenetre.dessinerRectangle(3*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "pink")
+
 
     def ChoixMenu(self):
         clic = self.fenetre.attendreClic()
@@ -32,12 +30,13 @@ class MenuGraphique():
 
 
 class JeuGraphique():
-    def __init__(self, villes, taille, fenetre, jeu, menu):
-        self.taille = taille
+    def __init__(self, taille_ville, villes, menu, jeu):
+        self.taille_ville = taille_ville
         self.villes = villes
-        self.fenetre = fenetre
-        self.jeu = jeu
         self.menu = menu
+        self.jeu = jeu
+        self.fenetre = self.menu.fenetre
+
 
     def initJeu(self):
         self.fenetre.supprimerTout()
@@ -45,19 +44,15 @@ class JeuGraphique():
         for ville in self.villes.dict:
             if ville == self.villes.depart:
                 self.fenetre.dessinerCercle(self.villes.dict[ville][0], self.villes.dict[ville][1], 100, "white")
-            self.fenetre.afficherImage(self.villes.dict[ville][0]-(TAILLE_VILLE/2), self.villes.dict[ville][1]-(TAILLE_VILLE/2), "Images/nenuphar.png", TAILLE_VILLE, TAILLE_VILLE)
+            self.fenetre.afficherImage(self.villes.dict[ville][0]-(self.taille_ville/2), self.villes.dict[ville][1]-(self.taille_ville/2), "Images/nenuphar.png", self.taille_ville, self.taille_ville)
         self.fenetre.actualiser()
+
 
     def LancerJeu(self):
         for idjoueur in range(self.jeu.nbjoueur):
             chemins = []
             while len(self.jeu.joueurs[idjoueur].parcours) < len(self.villes.dict):
-                choix_graphique_ville = self.fenetre.attendreClic()
-                choix_logique_ville = self.villes.TrouverVille(choix_graphique_ville.x, choix_graphique_ville.y)
-                while not choix_logique_ville:
-                    choix_graphique_ville = self.fenetre.attendreClic()
-                    choix_logique_ville = self.villes.TrouverVille(choix_graphique_ville.x, choix_graphique_ville.y)
-                self.jeu.ChoixVille(idjoueur, int(choix_logique_ville))
+                self.ChoixVille(idjoueur)
                 chemin = self.DessinerChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
                 print(self.jeu.ScoreEnCours(idjoueur))
@@ -69,8 +64,17 @@ class JeuGraphique():
                 self.fenetre.supprimer(chemin)
         print(f"GAGNANT : JOUEUR {self.jeu.Gagnant()+1}")
 
+
+    def ChoixVille(self, idjoueur):
+        choix_graphique_ville = self.fenetre.attendreClic()
+        choix_logique_ville = self.villes.TrouverVille(choix_graphique_ville.x, choix_graphique_ville.y)
+        while not choix_logique_ville:
+            choix_graphique_ville = self.fenetre.attendreClic()
+            choix_logique_ville = self.villes.TrouverVille(choix_graphique_ville.x, choix_graphique_ville.y)
+        self.jeu.ChoixVille(idjoueur, int(choix_logique_ville))
+
+
     def DessinerChemin(self, ancienne_ville, nouvelle_ville):
         chemin = self.fenetre.dessinerLigne(self.villes.dict[ancienne_ville][0], self.villes.dict[ancienne_ville][1], self.villes.dict[nouvelle_ville][0], self.villes.dict[nouvelle_ville][1], "white", 5)
         self.fenetre.actualiser()
         return chemin
-

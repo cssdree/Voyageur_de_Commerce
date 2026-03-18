@@ -7,7 +7,7 @@ import math
 class TestJeu(unittest.TestCase):
     def test_partie_un_joueur(self):
         villes = Villes(dict_villes={0:(0, 0), 1:(1,1), 2:(6,6)}, depart=0)
-        jeu = Jeu(nbjoueur=1, villes=villes)
+        jeu = JeuLogique(nbjoueur=1, villes=villes)
         jeu.ChoixVille(idjoueur=0, idville=1)
         self.assertEqual(math.sqrt(2), jeu.ScoreEnCours(idjoueur=0))
         jeu.ChoixVille(idjoueur=0, idville=2)
@@ -15,7 +15,7 @@ class TestJeu(unittest.TestCase):
 
     def test_interdiction_revisiter_ville(self):
         villes = Villes(dict_villes={0:(0, 0), 1:(1,1), 2:(6,6)}, depart=0)
-        jeu = Jeu(nbjoueur=1, villes=villes)
+        jeu = JeuLogique(nbjoueur=1, villes=villes)
         jeu.ChoixVille(idjoueur=0, idville=1)
         with self.assertRaises(PermissionError):
             jeu.ChoixVille(idjoueur=0, idville=1)
@@ -25,7 +25,7 @@ class TestJeu(unittest.TestCase):
 
     def test_partie_deux_joueur(self):
         villes = Villes(dict_villes={0:(0,0), 1:(2,8), 2:(2,2), 3:(6,6)}, depart=0)
-        jeu = Jeu(nbjoueur=2, villes=villes)
+        jeu = JeuLogique(nbjoueur=2, villes=villes)
         jeu.ChoixVille(idjoueur=0, idville=2)
         jeu.ChoixVille(idjoueur=0, idville=3)
         jeu.ChoixVille(idjoueur=0, idville=1)

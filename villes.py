@@ -2,6 +2,10 @@ import random
 import math
 
 
+TAILLE_VILLE = 110
+HAUTEUR_OPTION = 50
+
+
 class Villes():
     def __init__(self, dict_villes, depart):
         self.dict = dict_villes
@@ -10,8 +14,8 @@ class Villes():
 
     def TrouverVille(self, x, y):
         for idville in self.dict:
-            if math.dist((x,y), self.dict[idville]) < 0.5:
-                return idville
+            if math.dist((x,y), self.dict[idville]) < 100:
+                return str(idville) ### ARRANGER DANS LE TEST
         return False
 
     def TrouverPlusProcheVille(self, ville_actuelle, villes_possibles):
@@ -28,14 +32,16 @@ class Villes():
         return distance
 
 
-def VilleAcceptable(c, l, dict_villes):
+def VilleAcceptable(x, y, dict_villes):
     coords = set(dict_villes.values())
-    if VilleDansTriangle((c,l), (0,450), (0,900), (500,900)) or VilleDansTriangle((c,l), (900,200), (700,450), (900,650)):
+    if VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
         return False
-    if (c, l) in coords:
+    if VilleDansOptions(y):
+        return False
+    if (x, y) in coords:
         return False
     for coord in coords:
-        if math.dist((c, l), coord) < 150:
+        if math.dist((x, y), coord) < TAILLE_VILLE+(TAILLE_VILLE / 2):
             return False
     return True
 
@@ -51,14 +57,18 @@ def VilleDansTriangle(ville, a, b, c):
     return not (has_neg and has_pos)
 
 
+def VilleDansOptions(y):
+    return y < HAUTEUR_OPTION*1.5
+
+
 def CreationAleatoireVilles(taille_plan, nbville):
     dict_villes = {}
     v = 0
     while len(dict_villes) < nbville:
-        c = round(random.uniform(0,taille_plan-200), 3)
-        l = round(random.uniform(0,taille_plan-200), 3)
-        coord = (c, l)
-        if VilleAcceptable(c, l, dict_villes):
+        x = round(random.uniform(100,taille_plan-100), 3)
+        y= round(random.uniform(100,taille_plan-100), 3)
+        coord = (x, y)
+        if VilleAcceptable(x, y, dict_villes):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))

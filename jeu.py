@@ -1,8 +1,8 @@
 from joueurs import Joueur
 
 
-class Jeu():
-    def __init__(self, nbjoueur, villes):
+class JeuLogique():
+    def __init__(self, villes, nbjoueur):
         self.nbjoueur = nbjoueur
         self.villes = villes
         self.joueurs = {}

@@ -1,4 +1,3 @@
-import heuristiques
 from tkiteasy import *
 
 
@@ -9,20 +8,21 @@ class MenuGraphique():
         self.hauteur_option = hauteur_option
         self.longueur_option = longueur_option
         self.villes = villes
-        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan+self.hauteur_option,)
+        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
 
 
     def initPlateau(self):
-        self.fenetre.afficherImage(0, self.hauteur_option, "Images/fond.png", self.taille_plan, self.taille_plan)
+        self.fenetre.afficherImage(0, 0, "Images/fond.png", self.taille_plan, self.taille_plan)
         self.initMenu()
         self.initVilles()
 
 
     def initMenu(self):
-        self.ChoixJeu = self.fenetre.dessinerRectangle(0*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "white")
-        self.ChoixGreedy = self.fenetre.dessinerRectangle(1*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "pink")
-        self.ChoixCheapest = self.fenetre.dessinerRectangle(2*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "white")
-        self.ChoixRecursif = self.fenetre.dessinerRectangle(3*self.longueur_option, 0, self.longueur_option, self.hauteur_option, "pink")
+        self.ChoixJeu = self.fenetre.afficherImage(0*self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
+        self.ChoixGreedy = self.fenetre.afficherImage(1*self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
+        self.ChoixCheapest = self.fenetre.afficherImage(2*self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
+        self.ChoixRecursif = self.fenetre.afficherImage(3*self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
+        self.ChoixAutre = self.fenetre.afficherImage(4*self.longueur_option, 0, "Images/autre.png", self.longueur_option, self.hauteur_option)
 
 
     def initVilles(self):
@@ -96,50 +96,33 @@ def DessinerParcours(fenetre, villes, parcours):
         fenetre.dessinerLigne(villes.dict[parcours[posville]][0], villes.dict[parcours[posville]][1], villes.dict[parcours[posville+1]][0], villes.dict[parcours[posville+1]][1], "white", 5)
 
 
-
-class GreedyGraphique():
-    def __init__(self, villes, menu):
+class HeuristiqueGraphique():
+    def __init__(self, villes, menu, Heuristique):
         self.villes = villes
         self.menu = menu
+        self.Heuristique = Heuristique
         self.fenetre = self.menu.fenetre
 
-    def initGreedy(self):
+    def initHeuristique(self):
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
-        parcours_greedy = heuristiques.HeuristiqueGreedy(self.villes)
-        print(parcours_greedy)
-        DessinerParcours(self.fenetre, self.villes, parcours_greedy)
-        print(self.villes.DistanceTotaleParcours(parcours_greedy))
-
-
-
-class CheapestGraphique():
-    def __init__(self, villes, menu):
-        self.villes = villes
-        self.menu = menu
-        self.fenetre = self.menu.fenetre
-
-    def initCheapest(self):
-        self.fenetre.supprimerTout()
-        self.menu.initPlateau()
-        parcours_cheap = heuristiques.HeuristiqueCheapestInsertion(self.villes)
-        print(parcours_cheap)
-        DessinerParcours(self.fenetre, self.villes, parcours_cheap)
-        print(self.villes.DistanceTotaleParcours(parcours_cheap))
+        parcours = self.Heuristique(self.villes)
+        DessinerParcours(self.fenetre, self.villes, parcours)
+        print(self.villes.DistanceTotaleParcours(parcours))
 
 
 
 class RecursifGraphique():
-    def __init__(self, villes, menu):
+    def __init__(self, villes, menu, Heuristique):
         self.villes = villes
         self.menu = menu
+        self.Heuristique = Heuristique
         self.fenetre = self.menu.fenetre
 
     def initRecursif(self):
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
-        parcours_recursif = heuristiques.ParcoursRecursif(self.villes)
+        parcours_recursif = self.Heuristique(self.villes)
         resultat_recursif = parcours_recursif.ResultatRecursif()
-        print(resultat_recursif)
         DessinerParcours(self.fenetre, self.villes, resultat_recursif)
         print(self.villes.DistanceTotaleParcours(resultat_recursif))

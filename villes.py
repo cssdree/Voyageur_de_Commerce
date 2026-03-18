@@ -59,7 +59,7 @@ def VilleDansTriangle(ville, a, b, c):
 
 
 def VilleDansOptions(y, hauteur_option):
-    return y < hauteur_option*3
+    return y < hauteur_option*2.5
 
 
 def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):

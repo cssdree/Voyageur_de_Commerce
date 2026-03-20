@@ -3,14 +3,15 @@ import math
 
 
 class Villes():
-    def __init__(self, dict_villes, depart):
+    def __init__(self, taille_ville, dict_villes, depart):
+        self.taille_ville = taille_ville
         self.dict = dict_villes
         self.depart = depart
         self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
     def TrouverVilleAcceptable(self, x, y, visitees):
         for idville in self.dict:
-            if (math.dist((x,y), self.dict[idville]) < 100):
+            if (math.dist((x,y), self.dict[idville]) < (self.taille_ville/2.5)):
                 if idville not in visitees:
                     return str(idville)
                 return False
@@ -67,11 +68,11 @@ def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):
     dict_villes = {}
     v = 0
     while len(dict_villes) < nbville:
-        x = round(random.uniform(100,taille_plan-100), 3)
-        y = round(random.uniform(100,taille_plan-100), 3)
+        x = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
+        y = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
         coord = (x, y)
         if VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))
-    return Villes(dict_villes, depart)
+    return Villes(taille_ville, dict_villes, depart)

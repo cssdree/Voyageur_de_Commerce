@@ -2,23 +2,41 @@ from heuristiques import HeuristiqueGreedy, HeuristiqueCheapestInsertion
 from tkiteasy import *
 
 
-class MenuGraphique():
-    def __init__(self, taille_plan, taille_ville, hauteur_option, longueur_option, taille_grenouille, villes):
+class MenuPrincipalGraphique():
+    def __init__(self, taille_plan):
+        self.taille_plan = taille_plan
+
+    def initMenu(self):
+        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
+        self.fenetre.afficherImage(0, 0, "Images/menu.png", self.taille_plan, self.taille_plan)
+
+    def ChoixMenuPrincipal(self):
+        clic = self.fenetre.attendreClic()
+        if clic.x > 210 and clic.x < 685 and clic.y > 210 and clic.y < 410:
+            return "Duel"
+        if clic.x > 210 and clic.x < 685 and clic.y > 500 and clic.y < 700:
+            return "Solo"
+
+
+
+class MenuDuelGraphique():
+    def __init__(self, taille_plan, taille_ville, hauteur_option, longueur_option, taille_grenouille, villes, fenetre):
         self.taille_plan = taille_plan
         self.taille_ville = taille_ville
         self.hauteur_option = hauteur_option
         self.longueur_option = longueur_option
         self.taille_grenouille = taille_grenouille
         self.villes = villes
-        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
+        self.fenetre = fenetre
 
     def initPlateau(self):
+        self.fenetre.supprimerTout()
         self.fenetre.afficherImage(0, 0, "Images/fond.png", self.taille_plan, self.taille_plan)
-        self.initMenu()
+        self.initMenuDuel()
         self.initVilles()
         self.initGrenouille()
 
-    def initMenu(self):
+    def initMenuDuel(self):
         self.ChoixJeu = self.fenetre.afficherImage(0*self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
         self.ChoixGreedy = self.fenetre.afficherImage(1*self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
         self.ChoixCheapest = self.fenetre.afficherImage(2*self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
@@ -35,7 +53,7 @@ class MenuGraphique():
     def initGrenouille(self):
         self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.taille_grenouille/1.5), "Images/assis_face.png", self.taille_grenouille, self.taille_grenouille)
 
-    def ChoixMenu(self):
+    def ChoixMenuDuel(self):
         clic = self.fenetre.attendreClic()
         if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixJeu:
             return "Jeu"
@@ -51,7 +69,7 @@ class MenuGraphique():
             return "2OPT"
 
 
-class JeuGraphique():
+class JeuDuelGraphique():
     def __init__(self, villes, menu, jeu):
         self.villes = villes
         self.menu = menu
@@ -151,6 +169,7 @@ class HeuristiqueGraphique():
         parcours = self.Heuristique(self.villes)
         distance = round(self.villes.DistanceTotaleParcours(parcours))
         self.DessinerParcours(parcours)
+        self.fenetre.placerAuDessus(self.menu.grenouille)
         self.AfficherScoreHeuristique(distance)
 
     def initRecursif(self):
@@ -160,6 +179,7 @@ class HeuristiqueGraphique():
         resultat_recursif = parcours_recursif.ResultatRecursif()
         distance = round(self.villes.DistanceTotaleParcours(resultat_recursif))
         self.DessinerParcours(resultat_recursif)
+        self.fenetre.placerAuDessus(self.menu.grenouille)
         self.AfficherScoreHeuristique(distance)
 
     def init2OPT(self):
@@ -172,6 +192,7 @@ class HeuristiqueGraphique():
         parcours_ameliore = self.Heuristique(self.villes, parcours)
         distance = round(self.villes.DistanceTotaleParcours(parcours_ameliore))
         self.DessinerParcours(parcours_ameliore)
+        self.fenetre.placerAuDessus(self.menu.grenouille)
         self.AfficherScoreHeuristique(distance)
 
     def DessinerParcours(self, parcours):

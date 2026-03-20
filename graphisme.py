@@ -51,7 +51,6 @@ class MenuGraphique():
             return "2OPT"
 
 
-
 class JeuGraphique():
     def __init__(self, villes, menu, jeu):
         self.villes = villes
@@ -136,7 +135,6 @@ class JeuGraphique():
         if idjoueur == 1:
             self.fenetre.changerTexte(self.score_joueur_1, score)
         self.fenetre.actualiser()
-
 
 
 class HeuristiqueGraphique():

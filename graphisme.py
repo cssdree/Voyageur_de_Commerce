@@ -23,9 +23,9 @@ class MenuGraphique():
         self.ChoixGreedy = self.fenetre.afficherImage(1*self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
         self.ChoixCheapest = self.fenetre.afficherImage(2*self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
         self.ChoixRecursif = self.fenetre.afficherImage(3*self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
-        self.ChoixAutre = self.fenetre.afficherImage(4*self.longueur_option, 0, "Images/autre.png", self.longueur_option, self.hauteur_option)
-        self.Choix2OPT = self.fenetre.afficherImage(20, 820, "Images/rondin.png", 150, 60)
-        self.fenetre.afficherImage(730, 820, "Images/rondin.png", 150, 60)
+        self.ChoixDynamique = self.fenetre.afficherImage(4*self.longueur_option, 0, "Images/dynamique.png", self.longueur_option, self.hauteur_option)
+        self.Choix2OPT = self.fenetre.afficherImage(20, self.taille_plan - self.hauteur_option + 7, "Images/2_opt.png", self.longueur_option, self.hauteur_option)
+        self.fenetre.afficherImage(self.taille_plan - self.longueur_option - 20, self.taille_plan - self.hauteur_option + 7, "Images/vide.png", self.longueur_option, self.hauteur_option)
 
 
     def initVilles(self):
@@ -62,8 +62,9 @@ class JeuGraphique():
     def initJeu(self):
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
-        self.score_joueur_0 = self.fenetre.afficherTexte("0", 95, 850, "white", 20)
-        self.score_joueur_1 = self.fenetre.afficherTexte("0", 805, 850, "white", 20)
+        self.fenetre.afficherImage(20, self.menu.taille_plan - self.menu.hauteur_option + 7, "Images/vide.png", self.menu.longueur_option, self.menu.hauteur_option)
+        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.menu.longueur_option/2), (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
+        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.menu.taille_plan - (self.menu.longueur_option/2) - 20, (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
 
 
     def LancerJeu(self):
@@ -73,10 +74,10 @@ class JeuGraphique():
                 self.ChoixVille(idjoueur)
                 chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
-                self.AfficherScore(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
+                self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
             dernier_chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
             chemins.append(dernier_chemin)
-            self.AfficherScore(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
+            self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
             self.fenetre.pause(1)
             for chemin in chemins :
                 self.fenetre.supprimer(chemin)
@@ -97,7 +98,7 @@ class JeuGraphique():
         return chemin
 
 
-    def AfficherScore(self, idjoueur, score):
+    def AfficherScoreJeu(self, idjoueur, score):
         if idjoueur == 0:
             self.fenetre.changerTexte(self.score_joueur_0, score)
         if idjoueur == 1:
@@ -120,7 +121,7 @@ class HeuristiqueGraphique():
         parcours = self.Heuristique(self.villes)
         distance = round(self.villes.DistanceTotaleParcours(parcours))
         self.DessinerParcours(parcours)
-        self.fenetre.afficherTexte(distance, 805, 850, "white", 20)
+        self.AfficherScoreHeuristique(distance)
 
     def initRecursif(self):
         self.fenetre.supprimerTout()
@@ -129,7 +130,7 @@ class HeuristiqueGraphique():
         resultat_recursif = parcours_recursif.ResultatRecursif()
         distance = round(self.villes.DistanceTotaleParcours(resultat_recursif))
         self.DessinerParcours(resultat_recursif)
-        self.fenetre.afficherTexte(distance, 805, 850, "white", 20)
+        self.AfficherScoreHeuristique(distance)
 
     def init2OPT(self):
         self.fenetre.supprimerTout()
@@ -141,8 +142,11 @@ class HeuristiqueGraphique():
         parcours_ameliore = self.Heuristique(self.villes, parcours)
         distance = round(self.villes.DistanceTotaleParcours(parcours_ameliore))
         self.DessinerParcours(parcours_ameliore)
-        self.fenetre.afficherTexte(distance, 805, 850, "white", 20)
+        self.AfficherScoreHeuristique(distance)
 
     def DessinerParcours(self, parcours):
         for posville in range(len(parcours) - 1):
             self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville + 1]][0], self.villes.dict[parcours[posville + 1]][1], "white", 5)
+
+    def AfficherScoreHeuristique(self, distance):
+        self.fenetre.afficherTexte(distance, self.menu.taille_plan - (self.menu.longueur_option / 2) - 20, (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option / 2) + 5, "#2D221B", 25)

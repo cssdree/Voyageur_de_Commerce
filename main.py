@@ -13,18 +13,19 @@ LONGUEUR_OPTION = 180
 TAILLE_GRENOUILLE = 75
 
 
-choix_duel = None
 dernier_choix = None
 M = MenuPrincipalGraphique(TAILLE_PLAN)
-M.initMenu()
 while True:
+    M.initMenu()
     choix_principal = M.ChoixMenuPrincipal()
     if choix_principal == "Duel":
         villes = CreationAleatoireVilles(NBV, TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION)
         MD = MenuDuelGraphique(TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION, LONGUEUR_OPTION, TAILLE_GRENOUILLE, villes, M.fenetre)
         MD.initPlateau()
-        while True:
+        touche = None
+        while touche != "Escape":
             choix_duel = MD.ChoixMenuDuel()
+            touche = M.fenetre.recupererTouche()
             if choix_duel == "Jeu":
                 JL = JeuLogique(villes, NBJ)
                 JG = JeuDuelGraphique(villes, MD, JL)

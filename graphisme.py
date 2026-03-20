@@ -5,9 +5,13 @@ from tkiteasy import *
 class MenuPrincipalGraphique():
     def __init__(self, taille_plan):
         self.taille_plan = taille_plan
+        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
 
     def initMenu(self):
-        self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
+        try:
+            self.fenetre.supprimerTout()
+        except Exception:
+            pass
         self.fenetre.afficherImage(0, 0, "Images/menu.png", self.taille_plan, self.taille_plan)
 
     def ChoixMenuPrincipal(self):
@@ -16,7 +20,6 @@ class MenuPrincipalGraphique():
             return "Duel"
         if clic.x > 210 and clic.x < 685 and clic.y > 500 and clic.y < 700:
             return "Solo"
-
 
 
 class MenuDuelGraphique():

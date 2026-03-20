@@ -3,20 +3,20 @@ from tkiteasy import *
 
 
 class MenuGraphique():
-    def __init__(self, taille_plan, taille_ville, hauteur_option, longueur_option, villes):
+    def __init__(self, taille_plan, taille_ville, hauteur_option, longueur_option, taille_grenouille, villes):
         self.taille_plan = taille_plan
         self.taille_ville = taille_ville
         self.hauteur_option = hauteur_option
         self.longueur_option = longueur_option
+        self.taille_grenouille = taille_grenouille
         self.villes = villes
         self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
-
 
     def initPlateau(self):
         self.fenetre.afficherImage(0, 0, "Images/fond.png", self.taille_plan, self.taille_plan)
         self.initMenu()
         self.initVilles()
-
+        self.initGrenouille()
 
     def initMenu(self):
         self.ChoixJeu = self.fenetre.afficherImage(0*self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
@@ -27,26 +27,27 @@ class MenuGraphique():
         self.Choix2OPT = self.fenetre.afficherImage(20, self.taille_plan - self.hauteur_option + 7, "Images/2_opt.png", self.longueur_option, self.hauteur_option)
         self.fenetre.afficherImage(self.taille_plan - self.longueur_option - 20, self.taille_plan - self.hauteur_option + 7, "Images/vide.png", self.longueur_option, self.hauteur_option)
 
-
     def initVilles(self):
         for ville in self.villes.dict:
-            if ville == self.villes.depart:
-                self.fenetre.dessinerCercle(self.villes.dict[ville][0], self.villes.dict[ville][1], 80, "white")
             self.fenetre.afficherImage(self.villes.dict[ville][0]-(self.taille_ville/2), self.villes.dict[ville][1]-(self.taille_ville/2), "Images/nenuphar.png", self.taille_ville, self.taille_ville)
         self.fenetre.actualiser()
 
+    def initGrenouille(self):
+        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.taille_grenouille/1.5), "Images/assis_face.png", self.taille_grenouille, self.taille_grenouille)
 
     def ChoixMenu(self):
         clic = self.fenetre.attendreClic()
         if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixJeu:
             return "Jeu"
-        if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixGreedy:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixGreedy:
             return "Greedy"
-        if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixCheapest:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixCheapest:
             return "Cheapest"
-        if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixRecursif:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixRecursif:
             return "Recursif"
-        if self.fenetre.recupererObjet(clic.x, clic.y) == self.Choix2OPT:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixDynamique:
+            return "Dynamique"
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.Choix2OPT:
             return "2OPT"
 
 
@@ -57,31 +58,34 @@ class JeuGraphique():
         self.menu = menu
         self.jeu = jeu
         self.fenetre = self.menu.fenetre
-
+        self.grenouilles = {"assis_face":"Images/assis_face.png", "assis_dos":"Images/assis_dos.png", "assis_droite":"Images/assis_droite.png", "assis_gauche":"Images/assis_gauche.png", "saut_face":"Images/saut_face.png", "saut_dos":"Images/saut_dos.png", "saut_droite":"Images/saut_droite.png", "saut_gauche":"Images/saut_gauche.png"}
 
     def initJeu(self):
         self.fenetre.supprimerTout()
         self.menu.initPlateau()
+        self.fenetre.supprimer(self.menu.grenouille)
+        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.menu.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.menu.taille_grenouille/1.5), "Images/assis_face.png", self.menu.taille_grenouille, self.menu.taille_grenouille)
         self.fenetre.afficherImage(20, self.menu.taille_plan - self.menu.hauteur_option + 7, "Images/vide.png", self.menu.longueur_option, self.menu.hauteur_option)
         self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.menu.longueur_option/2), (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
         self.score_joueur_1 = self.fenetre.afficherTexte("0", self.menu.taille_plan - (self.menu.longueur_option/2) - 20, (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
-
 
     def LancerJeu(self):
         for idjoueur in range(self.jeu.nbjoueur):
             chemins = []
             while len(self.jeu.joueurs[idjoueur].parcours) < len(self.villes.dict):
                 self.ChoixVille(idjoueur)
+                self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-2]], self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], "progression")
                 chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
+                self.fenetre.placerAuDessus(self.grenouille)
                 self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
             dernier_chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
             chemins.append(dernier_chemin)
+            self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], self.villes.dict[self.villes.depart])
             self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
             self.fenetre.pause(1)
             for chemin in chemins :
                 self.fenetre.supprimer(chemin)
-
 
     def ChoixVille(self, idjoueur):
         choix_graphique_ville = self.fenetre.attendreClic()
@@ -91,12 +95,40 @@ class JeuGraphique():
             choix_logique_ville = self.villes.TrouverVilleAcceptable(choix_graphique_ville.x, choix_graphique_ville.y, self.jeu.joueurs[idjoueur].visitees)
         self.jeu.ChoixVille(idjoueur, int(choix_logique_ville))
 
+    def DeplacerGrenouille(self, old_position, new_position, etape=None):
+        nouvelles_grenouilles = self.DirectionGrenouille(old_position, new_position)
+        self.fenetre.supprimer(self.grenouille)
+        if etape == "progression":
+            self.SauterGrenouille(nouvelles_grenouilles[1], old_position, new_position)
+        self.grenouille = self.fenetre.afficherImage(old_position[0], old_position[1], nouvelles_grenouilles[0], self.menu.taille_grenouille, self.menu.taille_grenouille)
+        self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.menu.taille_grenouille/2), new_position[1] - old_position[1] - (self.menu.taille_grenouille/1.5))
+        self.fenetre.placerAuDessus(self.grenouille)
 
-    def AfficherChemin(self, ancienne_ville, nouvelle_ville):
-        chemin = self.fenetre.dessinerLigne(self.villes.dict[ancienne_ville][0], self.villes.dict[ancienne_ville][1], self.villes.dict[nouvelle_ville][0], self.villes.dict[nouvelle_ville][1], "white", 5)
+    def DirectionGrenouille(self, old_position, new_position):
+        dx = new_position[0] - old_position[0]
+        dy = new_position[1] - old_position[1]
+        if abs(dx) > abs(dy):
+            if dx > 0:
+                return (self.grenouilles["assis_droite"], self.grenouilles["saut_droite"])
+            else:
+                return (self.grenouilles["assis_gauche"], self.grenouilles["saut_gauche"])
+        else:
+            if dy > 0:
+                return (self.grenouilles["assis_face"], self.grenouilles["saut_face"])
+            else:
+                return (self.grenouilles["assis_dos"], self.grenouilles["saut_dos"])
+
+    def SauterGrenouille(self, grenouille_sautante, old_position, new_position):
+        self.fenetre.pause(0.1)
+        grenouille_en_saut = self.fenetre.afficherImage(((new_position[0] + old_position[0])//2) - (self.menu.taille_grenouille/2), ((new_position[1] + old_position[1])//2) - (self.menu.taille_grenouille/1.5), grenouille_sautante, self.menu.taille_grenouille, self.menu.taille_grenouille)
+        self.fenetre.actualiser()
+        self.fenetre.pause(0.2)
+        self.fenetre.supprimer(grenouille_en_saut)
+
+    def AfficherChemin(self, old_ville, new_ville):
+        chemin = self.fenetre.dessinerLigne(self.villes.dict[old_ville][0], self.villes.dict[old_ville][1], self.villes.dict[new_ville][0], self.villes.dict[new_ville][1], "white", 5)
         self.fenetre.actualiser()
         return chemin
-
 
     def AfficherScoreJeu(self, idjoueur, score):
         if idjoueur == 0:

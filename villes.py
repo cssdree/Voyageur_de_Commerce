@@ -8,7 +8,6 @@ class Villes():
         self.depart = depart
         self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
-
     def TrouverVilleAcceptable(self, x, y, visitees):
         for idville in self.dict:
             if (math.dist((x,y), self.dict[idville]) < 100):
@@ -17,14 +16,12 @@ class Villes():
                 return False
         return False
 
-
     def TrouverPlusProcheVille(self, ville_actuelle, villes_possibles):
         nearest = random.choice(list(villes_possibles))
         for idville in villes_possibles:
             if math.dist(self.dict[ville_actuelle], self.dict[idville]) < math.dist(self.dict[ville_actuelle], self.dict[nearest]):
                 nearest = idville
         return nearest
-
 
     def DistanceTotaleParcours(self, parcours):
         distance = 0

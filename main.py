@@ -22,10 +22,9 @@ while True:
         villes = CreationAleatoireVilles(NBV, TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION)
         MD = MenuDuelGraphique(TAILLE_PLAN, TAILLE_VILLE, HAUTEUR_OPTION, LONGUEUR_OPTION, TAILLE_GRENOUILLE, villes, M.fenetre)
         MD.initPlateau()
-        touche = None
-        while touche != "Escape":
+        choix_duel = None
+        while choix_duel != "STOP":
             choix_duel = MD.ChoixMenuDuel()
-            touche = M.fenetre.recupererTouche()
             if choix_duel == "Jeu":
                 JL = JeuLogique(villes, NBJ)
                 JG = JeuDuelGraphique(villes, MD, JL)

@@ -58,6 +58,8 @@ class MenuDuelGraphique():
 
     def ChoixMenuDuel(self):
         clic = self.fenetre.attendreClic()
+        if clic.num == 3:
+            return "STOP"
         if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixJeu:
             return "Jeu"
         elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixGreedy:

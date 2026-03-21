@@ -3,7 +3,7 @@ import math
 
 
 class Villes():
-    def __init__(self, taille_ville, dict_villes, depart):
+    def __init__(self, dict_villes, depart, taille_ville=0):
         self.taille_ville = taille_ville
         self.dict = dict_villes
         self.depart = depart
@@ -75,4 +75,4 @@ def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))
-    return Villes(taille_ville, dict_villes, depart)
+    return Villes(dict_villes, depart, taille_ville)

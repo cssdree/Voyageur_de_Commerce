@@ -96,14 +96,14 @@ class JeuDuelGraphique():
             chemins = []
             while len(self.jeu.joueurs[idjoueur].parcours) < len(self.villes.dict):
                 self.ChoixVille(idjoueur)
-                self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-2]], self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], "progression")
+                self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-2]], self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]])
                 chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
                 self.fenetre.placerAuDessus(self.grenouille)
                 self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
             dernier_chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
             chemins.append(dernier_chemin)
-            self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], self.villes.dict[self.villes.depart])
+            self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], self.villes.dict[self.villes.depart], "fin")
             self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
             self.fenetre.pause(1)
             for chemin in chemins :
@@ -120,8 +120,9 @@ class JeuDuelGraphique():
     def DeplacerGrenouille(self, old_position, new_position, etape=None):
         nouvelles_grenouilles = self.DirectionGrenouille(old_position, new_position)
         self.fenetre.supprimer(self.grenouille)
-        if etape == "progression":
-            self.SauterGrenouille(nouvelles_grenouilles[1], old_position, new_position)
+        if etape == "fin":
+            self.fenetre.pause(0.1)
+        self.SauterGrenouille(nouvelles_grenouilles[1], old_position, new_position)
         self.grenouille = self.fenetre.afficherImage(old_position[0], old_position[1], nouvelles_grenouilles[0], self.menu.taille_grenouille, self.menu.taille_grenouille)
         self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.menu.taille_grenouille/2), new_position[1] - old_position[1] - (self.menu.taille_grenouille/1.5))
         self.fenetre.placerAuDessus(self.grenouille)

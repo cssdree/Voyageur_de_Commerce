@@ -57,7 +57,7 @@ def VilleDansTriangle(ville, a, b, c):
 
 
 def VilleDansOptions(y, hauteur_option):
-    return y < hauteur_option*2.5
+    return y < hauteur_option*2
 
 
 def VilleDansRondins(x, y):

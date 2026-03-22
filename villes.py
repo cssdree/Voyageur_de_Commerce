@@ -30,6 +30,9 @@ class Villes():
             distance += math.dist(self.dict[parcours[v]], self.dict[parcours[v-1]])
         return distance
 
+    def Distance(self, idville1, idville2):
+        return math.dist(self.dict[idville1], self.dict[idville2])
+
 
 def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
     coords = set(dict_villes.values())
@@ -57,22 +60,22 @@ def VilleDansTriangle(ville, a, b, c):
 
 
 def VilleDansOptions(y, hauteur_option):
-    return y < hauteur_option*2
+    return y < hauteur_option*1.5
 
 
 def VilleDansRondins(x, y):
     return (x > 690) and (y > 790)
 
 
-def CreationAleatoireVilles(nbville, taille_plan, taille_ville, hauteur_option):
+def CreationAleatoireVilles(parametres):
     dict_villes = {}
     v = 0
-    while len(dict_villes) < nbville:
-        x = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
-        y = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
+    while len(dict_villes) < parametres.nbv:
+        x = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
+        y = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
         coord = (x, y)
-        if VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
+        if VilleAcceptable(x, y, dict_villes, parametres.taille_ville, parametres.hauteur_option):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))
-    return Villes(dict_villes, depart, taille_ville)
+    return Villes(dict_villes, depart, parametres.taille_ville)

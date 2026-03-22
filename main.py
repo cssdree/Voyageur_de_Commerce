@@ -1,29 +1,21 @@
 from villes import CreationAleatoireVilles
+from parametres import Parametres
 from jeu import JeuLogique
 from heuristiques import *
 from graphisme import *
 
 
-NBJ = 2
-NBV = 10
-TAILLE_PLAN = 900
-TAILLE_VILLE = 110
-HAUTEUR_OPTION = 70
-LONGUEUR_OPTION = 180
-TAILLE_GRENOUILLE = 75
-
-
-def Duel(nbv, taille_plan, taille_ville, taille_grenouille, hauteur_option, longueur_option, fenetre):
-    villes = CreationAleatoireVilles(nbv, taille_plan, taille_ville, hauteur_option)
-    MD = MenuDuelGraphique(taille_plan, taille_ville, hauteur_option, longueur_option, taille_grenouille, villes, fenetre)
+def Duel(parametres, fenetre):
+    villes = CreationAleatoireVilles(parametres)
+    MD = MenuDuelGraphique(parametres, villes, fenetre)
     MD.initPlateau()
     choix_duel = None
     dernier_choix = None
     while choix_duel != "STOP":
         choix_duel = MD.ChoixMenuDuel()
         if choix_duel == "Jeu":
-            JL = JeuLogique(villes, NBJ)
-            JG = JeuDuelGraphique(villes, MD, JL)
+            JL = JeuLogique(villes, parametres.nbj)
+            JG = JeuDuelGraphique(villes, parametres, MD, JL)
             JG.initJeu()
             JG.LancerJeu()
         elif choix_duel == "Greedy":
@@ -42,10 +34,13 @@ def Duel(nbv, taille_plan, taille_ville, taille_grenouille, hauteur_option, long
         dernier_choix = choix_duel
 
 
-M = MenuPrincipalGraphique(TAILLE_PLAN)
+parametres = Parametres()
+M = MenuPrincipalGraphique(parametres.taille_plan)
 while True:
-    M.initMenu()
+    M.initMenuPrincipal()
     choix_principal = M.ChoixMenuPrincipal()
     if choix_principal == "Duel":
-        Duel(NBV, TAILLE_PLAN, TAILLE_VILLE, TAILLE_GRENOUILLE, HAUTEUR_OPTION, LONGUEUR_OPTION, M.fenetre)
+        Duel(parametres, M.fenetre)
     #elif choix_principal == "Solo":
+    elif choix_principal == "Parametres":
+        parametres.initParametres()

@@ -7,7 +7,7 @@ class MenuPrincipalGraphique():
         self.taille_plan = taille_plan
         self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
 
-    def initMenu(self):
+    def initMenuPrincipal(self):
         try:
             self.fenetre.supprimerTout()
         except Exception:
@@ -18,17 +18,19 @@ class MenuPrincipalGraphique():
         clic = self.fenetre.attendreClic()
         if clic.x > 210 and clic.x < 685 and clic.y > 210 and clic.y < 410:
             return "Duel"
-        if clic.x > 210 and clic.x < 685 and clic.y > 500 and clic.y < 700:
+        elif clic.x > 210 and clic.x < 685 and clic.y > 500 and clic.y < 700:
             return "Solo"
+        elif clic.x > 800 and clic.y > 800:
+            return "Parametres"
 
 
 class MenuDuelGraphique():
-    def __init__(self, taille_plan, taille_ville, hauteur_option, longueur_option, taille_grenouille, villes, fenetre):
-        self.taille_plan = taille_plan
-        self.taille_ville = taille_ville
-        self.hauteur_option = hauteur_option
-        self.longueur_option = longueur_option
-        self.taille_grenouille = taille_grenouille
+    def __init__(self, parametres, villes, fenetre):
+        self.taille_plan = parametres.taille_plan
+        self.taille_ville = parametres.taille_ville
+        self.hauteur_option = parametres.hauteur_option
+        self.longueur_option = parametres.longueur_option
+        self.taille_grenouille = parametres.taille_grenouille
         self.villes = villes
         self.fenetre = fenetre
 
@@ -75,21 +77,22 @@ class MenuDuelGraphique():
 
 
 class JeuDuelGraphique():
-    def __init__(self, villes, menu, jeu):
+    def __init__(self, villes, parametres, menu_duel, jeu):
         self.villes = villes
-        self.menu = menu
+        self.parametres = parametres
+        self.menu_duel = menu_duel
         self.jeu = jeu
-        self.fenetre = self.menu.fenetre
+        self.fenetre = self.menu_duel.fenetre
         self.grenouilles = {"assis_face":"Images/assis_face.png", "assis_dos":"Images/assis_dos.png", "assis_droite":"Images/assis_droite.png", "assis_gauche":"Images/assis_gauche.png", "saut_face":"Images/saut_face.png", "saut_dos":"Images/saut_dos.png", "saut_droite":"Images/saut_droite.png", "saut_gauche":"Images/saut_gauche.png"}
 
     def initJeu(self):
         self.fenetre.supprimerTout()
-        self.menu.initPlateau()
-        self.fenetre.supprimer(self.menu.grenouille)
-        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.menu.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.menu.taille_grenouille/1.5), "Images/assis_face.png", self.menu.taille_grenouille, self.menu.taille_grenouille)
-        self.fenetre.afficherImage(20, self.menu.taille_plan - self.menu.hauteur_option + 7, "Images/vide.png", self.menu.longueur_option, self.menu.hauteur_option)
-        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.menu.longueur_option/2), (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
-        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.menu.taille_plan - (self.menu.longueur_option/2) - 20, (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option/2) + 5, "#2D221B", 25)
+        self.menu_duel.initPlateau()
+        self.fenetre.supprimer(self.menu_duel.grenouille)
+        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.parametres.taille_grenouille / 2), self.villes.dict[self.villes.depart][1] - (self.parametres.taille_grenouille / 1.5), "Images/assis_face.png", self.parametres.taille_grenouille, self.parametres.taille_grenouille)
+        self.fenetre.afficherImage(20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.parametres.longueur_option / 2), (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)
+        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option / 2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)
 
     def LancerJeu(self):
         for idjoueur in range(self.jeu.nbjoueur):
@@ -123,8 +126,8 @@ class JeuDuelGraphique():
         if etape == "fin":
             self.fenetre.pause(0.1)
         self.SauterGrenouille(nouvelles_grenouilles[1], old_position, new_position)
-        self.grenouille = self.fenetre.afficherImage(old_position[0], old_position[1], nouvelles_grenouilles[0], self.menu.taille_grenouille, self.menu.taille_grenouille)
-        self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.menu.taille_grenouille/2), new_position[1] - old_position[1] - (self.menu.taille_grenouille/1.5))
+        self.grenouille = self.fenetre.afficherImage(old_position[0], old_position[1], nouvelles_grenouilles[0], self.parametres.taille_grenouille, self.parametres.taille_grenouille)
+        self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.parametres.taille_grenouille / 2), new_position[1] - old_position[1] - (self.parametres.taille_grenouille / 1.5))
         self.fenetre.placerAuDessus(self.grenouille)
 
     def DirectionGrenouille(self, old_position, new_position):
@@ -143,7 +146,7 @@ class JeuDuelGraphique():
 
     def SauterGrenouille(self, grenouille_sautante, old_position, new_position):
         self.fenetre.pause(0.1)
-        grenouille_en_saut = self.fenetre.afficherImage(((new_position[0] + old_position[0])//2) - (self.menu.taille_grenouille/2), ((new_position[1] + old_position[1])//2) - (self.menu.taille_grenouille/1.5), grenouille_sautante, self.menu.taille_grenouille, self.menu.taille_grenouille)
+        grenouille_en_saut = self.fenetre.afficherImage(((new_position[0] + old_position[0])//2) - (self.parametres.taille_grenouille / 2), ((new_position[1] + old_position[1]) // 2) - (self.parametres.taille_grenouille / 1.5), grenouille_sautante, self.parametres.taille_grenouille, self.parametres.taille_grenouille)
         self.fenetre.actualiser()
         self.fenetre.pause(0.2)
         self.fenetre.supprimer(grenouille_en_saut)

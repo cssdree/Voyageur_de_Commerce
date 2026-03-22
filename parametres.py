@@ -4,7 +4,7 @@ from tkiteasy import *
 class Parametres():
     def __init__(self):
         self.nbj = 2
-        self.nbv = 10
+        self.nbv = 12
         self.taille_plan = 900
         self.taille_ville = 110
         self.hauteur_option = 70

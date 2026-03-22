@@ -16,9 +16,9 @@ class MenuPrincipalGraphique():
 
     def ChoixMenuPrincipal(self):
         clic = self.fenetre.attendreClic()
-        if clic.x > 210 and clic.x < 685 and clic.y > 210 and clic.y < 410:
+        if clic.x > 220 and clic.x < 675 and clic.y > 220 and clic.y < 400:
             return "Duel"
-        elif clic.x > 210 and clic.x < 685 and clic.y > 500 and clic.y < 700:
+        elif clic.x > 220 and clic.x < 675 and clic.y > 510 and clic.y < 690:
             return "Solo"
         elif clic.x > 800 and clic.y > 800:
             return "Parametres"

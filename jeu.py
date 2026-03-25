@@ -25,8 +25,3 @@ class JeuDuelLogique():
             scores[score] = j
         best_score = min(list(scores.keys()))
         return scores[best_score]
-
-
-class JeuSoloLogique():
-    def __init__(self, villes):
-        self.villes = villes

@@ -1,5 +1,5 @@
 from villes import Villes
-from jeux import *
+from jeu import *
 import unittest
 import math
 

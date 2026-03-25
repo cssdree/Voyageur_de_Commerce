@@ -1,6 +1,6 @@
 from villes import CreationAleatoireVilles
 from parametres import Parametres
-from jeux import JeuDuelLogique, JeuSoloLogique
+from jeu import JeuDuelLogique
 from heuristiques import *
 from graphisme import *
 
@@ -39,12 +39,9 @@ def Duel(parametres, fenetre):
 
 def Solo(parametres, fenetre):
     villes = CreationAleatoireVilles(parametres.nbv_solo, parametres.taille_ville_solo, parametres.taille_plan, parametres.hauteur_option, "Solo")
-    JL = JeuSoloLogique(villes)
-    JG = JeuSoloGraphique(villes, fenetre, JL, parametres)
+    JG = JeuSoloGraphique(villes, fenetre, parametres)
     JG.initJeuSolo()
-    choix_solo = None
-    #while choix_solo != "STOP":
-    #    choix_solo =
+    JG.LancerJeuSolo()
 
 
 parametres = Parametres()

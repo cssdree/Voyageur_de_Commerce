@@ -8,7 +8,7 @@ class Parametres():
         self.nbv_solo = 20
         self.taille_plan = 900
         self.taille_ville_duel = 110
-        self.taille_ville_solo = 40
+        self.taille_ville_solo = 50
         self.hauteur_option = 70
         self.longueur_option = 180
         self.taille_grenouille = 75

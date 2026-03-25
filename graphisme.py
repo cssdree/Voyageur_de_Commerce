@@ -125,7 +125,7 @@ class JeuDuelGraphique():
             self.fenetre.pause(0.1)
         self.SauterGrenouille(nouvelles_grenouilles[1], old_position, new_position)
         self.grenouille = self.fenetre.afficherImage(old_position[0], old_position[1], nouvelles_grenouilles[0], self.parametres.taille_grenouille, self.parametres.taille_grenouille)
-        self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.parametres.taille_grenouille / 2), new_position[1] - old_position[1] - (self.parametres.taille_grenouille / 1.5))
+        self.fenetre.deplacer(self.grenouille, new_position[0] - old_position[0] - (self.parametres.taille_grenouille/2), new_position[1] - old_position[1] - (self.parametres.taille_grenouille/1.5))
         self.fenetre.placerAuDessus(self.grenouille)
 
     def DirectionGrenouille(self, old_position, new_position):
@@ -144,7 +144,7 @@ class JeuDuelGraphique():
 
     def SauterGrenouille(self, grenouille_sautante, old_position, new_position):
         self.fenetre.pause(0.1)
-        grenouille_en_saut = self.fenetre.afficherImage(((new_position[0] + old_position[0])//2) - (self.parametres.taille_grenouille / 2), ((new_position[1] + old_position[1]) // 2) - (self.parametres.taille_grenouille / 1.5), grenouille_sautante, self.parametres.taille_grenouille, self.parametres.taille_grenouille)
+        grenouille_en_saut = self.fenetre.afficherImage(((new_position[0] + old_position[0])//2) - (self.parametres.taille_grenouille/2), ((new_position[1] + old_position[1])//2) - (self.parametres.taille_grenouille/1.5), grenouille_sautante, self.parametres.taille_grenouille, self.parametres.taille_grenouille)
         self.fenetre.actualiser()
         self.fenetre.pause(0.2)
         self.fenetre.supprimer(grenouille_en_saut)
@@ -163,19 +163,72 @@ class JeuDuelGraphique():
 
 
 class JeuSoloGraphique():
-    def __init__(self, villes, fenetre, jeu_solo, parametres):
+    def __init__(self, villes, fenetre, parametres):
         self.villes = villes
         self.fenetre = fenetre
-        self.jeu_solo = jeu_solo
         self.parametres = parametres
+        self.chemins = []
+        self.cercle_ville_1 = None
+        self.cercle_ville_2 = None
 
     def initJeuSolo(self):
-        pass
+        self.fenetre.supprimerTout()
+        self.fenetre.afficherImage(0, 0, "Images/fond.png", self.parametres.taille_plan, self.parametres.taille_plan)
+        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - 20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.distance = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B",25)
+        self.initVilles()
 
     def initVilles(self):
         for ville in self.villes.dict:
-            self.fenetre.afficherImage(self.villes.dict[ville][0] - (self.parametres.taille_ville/2), self.villes.dict[ville][1] - (self.parametres.taille_ville_duel/2), "Images/nenuphar.png", self.parametres.taille_ville_duel, self.parametres.taille_ville_duel)
+            self.fenetre.afficherImage(self.villes.dict[ville][0] - (self.parametres.taille_ville_solo/2), self.villes.dict[ville][1] - (self.parametres.taille_ville_solo/2), "Images/nenuphar.png", self.parametres.taille_ville_solo, self.parametres.taille_ville_solo)
         self.fenetre.actualiser()
+
+    def LancerJeuSolo(self):
+        self.parcours = HeuristiqueGreedy(self.villes)
+        self.DessinerParcours()
+        new_distance = round(self.villes.DistanceTotaleParcours(self.parcours))
+        self.fenetre.changerTexte(self.distance, new_distance)
+        choix_ville_1, choix_ville_2 = self.ChoixVilles()
+        while choix_ville_1 and choix_ville_2:
+            print(self.parcours)
+            self.parcours = PermuterVilles(self.parcours, int(choix_ville_1), int(choix_ville_2))
+            print(self.parcours)
+            self.DessinerParcours()
+            new_distance = round(self.villes.DistanceTotaleParcours(self.parcours))
+            self.fenetre.changerTexte(self.distance, new_distance)
+            choix_ville_1, choix_ville_2 = self.ChoixVilles()
+
+    def ChoixVilles(self):
+        if self.cercle_ville_1:
+            self.fenetre.supprimer(self.cercle_ville_1)
+        if self.cercle_ville_2:
+            self.fenetre.supprimer(self.cercle_ville_2)
+        choix_graphique_ville_1 = self.fenetre.attendreClic()
+        if choix_graphique_ville_1.num == 3:
+            return None, None
+        choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, set())
+        while not choix_logique_ville_1:
+            choix_graphique_ville_1 = self.fenetre.attendreClic()
+            if choix_graphique_ville_1.num == 3:
+                return None, None
+            choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, set())
+        self.cercle_ville_1 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo / 1.5, "white")
+        choix_graphique_ville_2 = self.fenetre.attendreClic()
+        choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, set())
+        while not choix_logique_ville_2:
+            choix_graphique_ville_2 = self.fenetre.attendreClic()
+            choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, set())
+        self.cercle_ville_2 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_2)][0], self.villes.dict[int(choix_logique_ville_2)][1], self.parametres.taille_ville_solo / 1.5, "white")
+        return choix_logique_ville_1, choix_logique_ville_2
+
+    def DessinerParcours(self):
+        if len(self.chemins)>0:
+            for chemin in self.chemins:
+                self.fenetre.supprimer(chemin)
+            self.chemins = []
+        for posville in range(len(self.parcours)-1):
+            chemin = self.fenetre.dessinerLigne(self.villes.dict[self.parcours[posville]][0], self.villes.dict[self.parcours[posville]][1], self.villes.dict[self.parcours[posville+1]][0], self.villes.dict[self.parcours[posville+1]][1], "white", 5)
+            self.chemins.append(chemin)
 
 
 class HeuristiqueGraphique():
@@ -219,9 +272,17 @@ class HeuristiqueGraphique():
         self.fenetre.placerAuDessus(self.menu.grenouille)
         self.AfficherScoreHeuristique(distance)
 
+    def AfficherScoreHeuristique(self, distance):
+        self.fenetre.afficherTexte(distance, self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20,(self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
+
     def DessinerParcours(self, parcours):
         for posville in range(len(parcours) - 1):
-            self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville + 1]][0], self.villes.dict[parcours[posville + 1]][1], "white", 5)
+            self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville+1]][0], self.villes.dict[parcours[posville+1]][1], "white", 5)
 
-    def AfficherScoreHeuristique(self, distance):
-        self.fenetre.afficherTexte(distance, self.parametres.taille_plan - (self.parametres.longueur_option / 2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)
+
+def PermuterVilles(parcours, ville_1, ville_2):
+    nouveau_parcours = parcours.copy()
+    id1 = nouveau_parcours.index(ville_1)
+    id2 = nouveau_parcours.index(ville_2)
+    nouveau_parcours[id1], nouveau_parcours[id2] = nouveau_parcours[id2], nouveau_parcours[id1]
+    return nouveau_parcours

@@ -36,9 +36,9 @@ class Villes():
 
 def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option, type_jeu):
     coords = set(dict_villes.values())
-    if type_jeu == "Duel" and VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
-        return False
     if type_jeu == "Duel" and VilleDansOptions(y, hauteur_option):
+        return False
+    if VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
         return False
     if VilleDansRondins(x, y):
         return False

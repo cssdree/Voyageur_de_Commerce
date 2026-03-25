@@ -195,9 +195,7 @@ class JeuSoloGraphique():
         self.fenetre.changerTexte(self.distance, new_distance)
         choix_ville_1, choix_ville_2 = self.ChoixVilles()
         while choix_ville_1 and choix_ville_2:
-            print(self.parcours)
             self.parcours = PermuterVilles(self.parcours, int(choix_ville_1), int(choix_ville_2))
-            print(self.parcours)
             self.DessinerParcours()
             new_distance = round(self.villes.DistanceTotaleParcours(self.parcours))
             self.fenetre.changerTexte(self.distance, new_distance)

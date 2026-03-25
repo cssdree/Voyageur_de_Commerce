@@ -25,7 +25,10 @@ def Duel(parametres, fenetre):
             HG = HeuristiqueGraphique(villes, MD, HeuristiqueCheapestInsertion)
             HG.initHeuristique()
         elif choix_duel == "Recursif":
-            HG = HeuristiqueGraphique(villes, MD, ParcoursRecursif)
+            HG = HeuristiqueGraphique(villes, MD, HeuristiqueRecursif)
+            HG.initRecursif()
+        elif choix_duel == "Dynamique":
+            HG = HeuristiqueGraphique(villes, MD, HeuristiqueDynamique)
             HG.initRecursif()
         elif choix_duel == "2OPT":
             if dernier_choix=="Greedy" or dernier_choix=="Cheapest":

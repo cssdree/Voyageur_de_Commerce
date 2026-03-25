@@ -4,7 +4,7 @@ from tkiteasy import *
 class Parametres():
     def __init__(self):
         self.nbj = 2
-        self.nbv_duel = 9
+        self.nbv_duel = 10
         self.nbv_solo = 20
         self.taille_plan = 900
         self.taille_ville = 110

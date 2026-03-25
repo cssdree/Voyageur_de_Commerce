@@ -14,10 +14,10 @@ class MyTestCase(unittest.TestCase):
 
     def test_parcours_recursif(self):
         villes = Villes(dict_villes={0:(5,1), 1:(5,2), 2:(5,3), 3:(5,4)}, depart=0)
-        parcours_recursif = ParcoursRecursif(villes)
+        parcours_recursif = HeuristiqueRecursif(villes)
         self.assertEqual(parcours_recursif.ResultatRecursif(), [0, 1, 2, 3, 0])
         villes = Villes(dict_villes={0:(2,2), 1:(4,2), 2:(4,4), 3:(2,4)}, depart=0)
-        parcours_recursif = ParcoursRecursif(villes)
+        parcours_recursif = HeuristiqueRecursif(villes)
         self.assertEqual(parcours_recursif.ResultatRecursif(), [0, 1, 2, 3, 0])
 
     def test_heuristique_2OPT(self):

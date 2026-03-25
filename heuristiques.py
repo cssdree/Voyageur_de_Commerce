@@ -37,7 +37,7 @@ def HeuristiqueCheapestInsertion(villes):
     return parcours_cheap
 
 
-class ParcoursRecursif():
+class HeuristiqueRecursif():
     def __init__(self, villes):
         self.villes = villes
         self.meilleur_parcours_recursif = ([], math.inf)
@@ -76,3 +76,39 @@ def Heuristique2OPT(villes, parcours):
                     parcours[i+1 : j+1] = reversed(parcours[i+1 : j+1])
                     amelioration = True
     return parcours
+
+
+class HeuristiqueDynamique:
+  def __init__(self, villes):
+    self.villes = villes
+    self.historique = {}
+
+  def RechercheRecursive(self, derniere_ville, villes_a_visiter):
+    cle = (villes_a_visiter, derniere_ville)
+    if cle in self.historique:
+      return self.historique[cle]
+    if len(villes_a_visiter) == 1:
+      distance = self.villes.Distance(self.villes.depart, derniere_ville)
+      parcours = [self.villes.depart, derniere_ville]
+      resultat = (distance, parcours)
+    else:
+      resultat = self.RechercheMeilleurePrecedente(derniere_ville, villes_a_visiter - {derniere_ville})
+    self.historique[cle] = resultat
+    return resultat
+
+  def RechercheMeilleurePrecedente(self, ville_reference, villes_restantes):
+    meilleure_distance = float('inf')
+    meilleur_parcours = None
+    for precedente in villes_restantes:
+      distance, parcours = self.RechercheRecursive(precedente, villes_restantes)
+      distance_totale = distance + self.villes.Distance(precedente, ville_reference)
+      if distance_totale < meilleure_distance:
+        meilleure_distance = distance_totale
+        meilleur_parcours = parcours[:]
+        meilleur_parcours.append(ville_reference)
+    return meilleure_distance, meilleur_parcours
+
+  def ResultatRecursif(self):
+    toutes_les_villes = frozenset(self.villes.dict.keys())
+    (_, meilleur_parcours) = self.RechercheMeilleurePrecedente(self.villes.depart, toutes_les_villes-{self.villes.depart})
+    return meilleur_parcours

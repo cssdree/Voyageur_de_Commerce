@@ -180,6 +180,11 @@ class JeuSoloGraphique():
 
     def initVilles(self):
         for ville in self.villes.dict:
+            if ville == self.villes.depart:
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
             self.fenetre.afficherImage(self.villes.dict[ville][0] - (self.parametres.taille_ville_solo/2), self.villes.dict[ville][1] - (self.parametres.taille_ville_solo/2), "Images/nenuphar.png", self.parametres.taille_ville_solo, self.parametres.taille_ville_solo)
         self.fenetre.actualiser()
 
@@ -206,19 +211,19 @@ class JeuSoloGraphique():
         choix_graphique_ville_1 = self.fenetre.attendreClic()
         if choix_graphique_ville_1.num == 3:
             return None, None
-        choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, set())
+        choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, {self.villes.depart})
         while not choix_logique_ville_1:
             choix_graphique_ville_1 = self.fenetre.attendreClic()
             if choix_graphique_ville_1.num == 3:
                 return None, None
-            choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, set())
-        self.cercle_ville_1 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo / 1.5, "white")
+            choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, {self.villes.depart})
+        self.cercle_ville_1 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo/1.5, "white")
         choix_graphique_ville_2 = self.fenetre.attendreClic()
-        choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, set())
+        choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, {self.villes.depart})
         while not choix_logique_ville_2:
             choix_graphique_ville_2 = self.fenetre.attendreClic()
-            choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, set())
-        self.cercle_ville_2 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_2)][0], self.villes.dict[int(choix_logique_ville_2)][1], self.parametres.taille_ville_solo / 1.5, "white")
+            choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, {self.villes.depart})
+        self.cercle_ville_2 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_2)][0], self.villes.dict[int(choix_logique_ville_2)][1], self.parametres.taille_ville_solo/1.5, "white")
         return choix_logique_ville_1, choix_logique_ville_2
 
     def DessinerParcours(self):

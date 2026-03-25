@@ -7,13 +7,14 @@ class Parametres():
         self.nbv_duel = 10
         self.nbv_solo = 20
         self.taille_plan = 900
-        self.taille_ville = 110
+        self.taille_ville_duel = 110
+        self.taille_ville_solo = 40
         self.hauteur_option = 70
         self.longueur_option = 180
         self.taille_grenouille = 75
         self.taille_engrenage = 80
         self.rayon_parametre = 10
-        self.catalogue_duel = {"5":(408,216), "6":(408,268), "7":(408,318), "8":(408,371), "9":(616,216), "10":(616,268), "11":(616,318), "12":(616,371)}
+        self.catalogue_duel = {"5":(408,216), "6":(408,268), "7":(408,320), "8":(408,371), "9":(616,216), "10":(616,268), "11":(616,320), "12":(616,371)}
         self.catalogue_solo = {"15":(553,580), "20":(553,648), "30":(553,714)}
 
     def initParametres(self):

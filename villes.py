@@ -34,13 +34,13 @@ class Villes():
         return math.dist(self.dict[idville1], self.dict[idville2])
 
 
-def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option):
+def VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option, type_jeu):
     coords = set(dict_villes.values())
-    if VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
+    if type_jeu == "Duel" and VilleDansTriangle((x, y), (0, 450), (0, 900), (500, 900)) or VilleDansTriangle((x, y), (900, 200), (700, 450), (900, 650)):
         return False
-    if VilleDansOptions(y, hauteur_option) or VilleDansRondins(x, y):
+    if type_jeu == "Duel" and VilleDansOptions(y, hauteur_option):
         return False
-    if (x, y) in coords:
+    if VilleDansRondins(x, y):
         return False
     for coord in coords:
         if math.dist((x, y), coord) < taille_ville+(taille_ville/2):
@@ -67,15 +67,15 @@ def VilleDansRondins(x, y):
     return (x > 690) and (y > 790)
 
 
-def CreationAleatoireVilles(parametres):
+def CreationAleatoireVilles(nbv, taille_ville, taille_plan, hauteur_option, type_jeu):
     dict_villes = {}
     v = 0
-    while len(dict_villes) < parametres.nbv_duel:
-        x = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
-        y = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
+    while len(dict_villes) < nbv:
+        x = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
+        y = round(random.uniform(taille_ville, taille_plan-taille_ville), 3)
         coord = (x, y)
-        if VilleAcceptable(x, y, dict_villes, parametres.taille_ville, parametres.hauteur_option):
+        if VilleAcceptable(x, y, dict_villes, taille_ville, hauteur_option, type_jeu):
             dict_villes[v] = coord
             v += 1
     depart = random.randrange(0,len(dict_villes))
-    return Villes(dict_villes, depart, parametres.taille_ville)
+    return Villes(dict_villes, depart, taille_ville)

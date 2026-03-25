@@ -1,7 +1,7 @@
 from joueurs import Joueur
 
 
-class JeuLogique():
+class JeuDuelLogique():
     def __init__(self, villes, nbjoueur):
         self.nbjoueur = nbjoueur
         self.villes = villes
@@ -25,3 +25,8 @@ class JeuLogique():
             scores[score] = j
         best_score = min(list(scores.keys()))
         return scores[best_score]
+
+
+class JeuSoloLogique():
+    def __init__(self, villes):
+        self.villes = villes

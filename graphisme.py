@@ -27,38 +27,34 @@ class MenuPrincipalGraphique():
 
 
 class MenuDuelGraphique():
-    def __init__(self, parametres, villes, fenetre):
-        self.taille_plan = parametres.taille_plan
-        self.taille_ville = parametres.taille_ville
-        self.hauteur_option = parametres.hauteur_option
-        self.longueur_option = parametres.longueur_option
-        self.taille_grenouille = parametres.taille_grenouille
+    def __init__(self, villes, fenetre, parametres):
         self.villes = villes
         self.fenetre = fenetre
+        self.parametres = parametres
 
     def initPlateau(self):
         self.fenetre.supprimerTout()
-        self.fenetre.afficherImage(0, 0, "Images/fond.png", self.taille_plan, self.taille_plan)
+        self.fenetre.afficherImage(0, 0, "Images/fond.png", self.parametres.taille_plan, self.parametres.taille_plan)
         self.initMenuDuel()
         self.initVilles()
         self.initGrenouille()
 
     def initMenuDuel(self):
-        self.choix_jeu = self.fenetre.afficherImage(0 * self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
-        self.choix_greedy = self.fenetre.afficherImage(1 * self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
-        self.choix_cheapest = self.fenetre.afficherImage(2 * self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
-        self.choix_recursif = self.fenetre.afficherImage(3 * self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
-        self.choix_dynamique = self.fenetre.afficherImage(4 * self.longueur_option, 0, "Images/dynamique.png", self.longueur_option, self.hauteur_option)
-        self.choix_2OPT = self.fenetre.afficherImage(20, self.taille_plan - self.hauteur_option + 7, "Images/2_opt.png", self.longueur_option, self.hauteur_option)
-        self.fenetre.afficherImage(self.taille_plan - self.longueur_option - 20, self.taille_plan - self.hauteur_option + 7, "Images/vide.png", self.longueur_option, self.hauteur_option)
+        self.choix_jeu = self.fenetre.afficherImage(0 * self.parametres.longueur_option, 0, "Images/jeu.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_greedy = self.fenetre.afficherImage(1 * self.parametres.longueur_option, 0, "Images/greedy.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_cheapest = self.fenetre.afficherImage(2 * self.parametres.longueur_option, 0, "Images/cheapest.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_recursif = self.fenetre.afficherImage(3 * self.parametres.longueur_option, 0, "Images/recursif.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_dynamique = self.fenetre.afficherImage(4 * self.parametres.longueur_option, 0, "Images/dynamique.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_2OPT = self.fenetre.afficherImage(20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/2_opt.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - 20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
 
     def initVilles(self):
         for ville in self.villes.dict:
-            self.fenetre.afficherImage(self.villes.dict[ville][0]-(self.taille_ville/2), self.villes.dict[ville][1]-(self.taille_ville/2), "Images/nenuphar.png", self.taille_ville, self.taille_ville)
+            self.fenetre.afficherImage(self.villes.dict[ville][0]-(self.parametres.taille_ville_duel/2), self.villes.dict[ville][1]-(self.parametres.taille_ville_duel/2), "Images/nenuphar.png", self.parametres.taille_ville_duel, self.parametres.taille_ville_duel)
         self.fenetre.actualiser()
 
     def initGrenouille(self):
-        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.taille_grenouille/1.5), "Images/assis_face.png", self.taille_grenouille, self.taille_grenouille)
+        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.parametres.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.parametres.taille_grenouille/1.5), "Images/assis_face.png", self.parametres.taille_grenouille, self.parametres.taille_grenouille)
 
     def ChoixMenuDuel(self):
         clic = self.fenetre.attendreClic()
@@ -79,48 +75,48 @@ class MenuDuelGraphique():
 
 
 class JeuDuelGraphique():
-    def __init__(self, villes, parametres, menu_duel, jeu):
+    def __init__(self, villes, menu_duel, jeu_duel, parametres):
         self.villes = villes
-        self.parametres = parametres
         self.menu_duel = menu_duel
-        self.jeu = jeu
+        self.jeu_duel = jeu_duel
+        self.parametres = parametres
         self.fenetre = self.menu_duel.fenetre
         self.grenouilles = {"assis_face":"Images/assis_face.png", "assis_dos":"Images/assis_dos.png", "assis_droite":"Images/assis_droite.png", "assis_gauche":"Images/assis_gauche.png", "saut_face":"Images/saut_face.png", "saut_dos":"Images/saut_dos.png", "saut_droite":"Images/saut_droite.png", "saut_gauche":"Images/saut_gauche.png"}
 
-    def initJeu(self):
+    def initJeuDuel(self):
         self.fenetre.supprimerTout()
         self.menu_duel.initPlateau()
         self.fenetre.supprimer(self.menu_duel.grenouille)
-        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.parametres.taille_grenouille / 2), self.villes.dict[self.villes.depart][1] - (self.parametres.taille_grenouille / 1.5), "Images/assis_face.png", self.parametres.taille_grenouille, self.parametres.taille_grenouille)
+        self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.parametres.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.parametres.taille_grenouille/1.5), "Images/assis_face.png", self.parametres.taille_grenouille, self.parametres.taille_grenouille)
         self.fenetre.afficherImage(20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.parametres.longueur_option / 2), (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)
-        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option / 2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)
+        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.parametres.longueur_option/2), (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
+        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
 
-    def LancerJeu(self):
-        for idjoueur in range(self.jeu.nbjoueur):
+    def LancerJeuDuel(self):
+        for idjoueur in range(self.jeu_duel.nbjoueur):
             chemins = []
-            while len(self.jeu.joueurs[idjoueur].parcours) < len(self.villes.dict):
+            while len(self.jeu_duel.joueurs[idjoueur].parcours) < len(self.villes.dict):
                 self.ChoixVille(idjoueur)
-                self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-2]], self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]])
-                chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-2], self.jeu.joueurs[idjoueur].parcours[-1])
+                self.DeplacerGrenouille(self.villes.dict[self.jeu_duel.joueurs[idjoueur].parcours[-2]], self.villes.dict[self.jeu_duel.joueurs[idjoueur].parcours[-1]])
+                chemin = self.AfficherChemin(self.jeu_duel.joueurs[idjoueur].parcours[-2], self.jeu_duel.joueurs[idjoueur].parcours[-1])
                 chemins.append(chemin)
                 self.fenetre.placerAuDessus(self.grenouille)
-                self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreEnCours(idjoueur)))
-            dernier_chemin = self.AfficherChemin(self.jeu.joueurs[idjoueur].parcours[-1], self.villes.depart)
+                self.AfficherScoreJeu(idjoueur, round(self.jeu_duel.ScoreEnCours(idjoueur)))
+            dernier_chemin = self.AfficherChemin(self.jeu_duel.joueurs[idjoueur].parcours[-1], self.villes.depart)
             chemins.append(dernier_chemin)
-            self.DeplacerGrenouille(self.villes.dict[self.jeu.joueurs[idjoueur].parcours[-1]], self.villes.dict[self.villes.depart], "fin")
-            self.AfficherScoreJeu(idjoueur, round(self.jeu.ScoreFinal(idjoueur)))
+            self.DeplacerGrenouille(self.villes.dict[self.jeu_duel.joueurs[idjoueur].parcours[-1]], self.villes.dict[self.villes.depart], "fin")
+            self.AfficherScoreJeu(idjoueur, round(self.jeu_duel.ScoreFinal(idjoueur)))
             self.fenetre.pause(1)
             for chemin in chemins :
                 self.fenetre.supprimer(chemin)
 
     def ChoixVille(self, idjoueur):
         choix_graphique_ville = self.fenetre.attendreClic()
-        choix_logique_ville = self.villes.TrouverVilleAcceptable(choix_graphique_ville.x, choix_graphique_ville.y, self.jeu.joueurs[idjoueur].visitees)
+        choix_logique_ville = self.villes.TrouverVilleAcceptable(choix_graphique_ville.x, choix_graphique_ville.y, self.jeu_duel.joueurs[idjoueur].visitees)
         while not choix_logique_ville:
             choix_graphique_ville = self.fenetre.attendreClic()
-            choix_logique_ville = self.villes.TrouverVilleAcceptable(choix_graphique_ville.x, choix_graphique_ville.y, self.jeu.joueurs[idjoueur].visitees)
-        self.jeu.ChoixVille(idjoueur, int(choix_logique_ville))
+            choix_logique_ville = self.villes.TrouverVilleAcceptable(choix_graphique_ville.x, choix_graphique_ville.y, self.jeu_duel.joueurs[idjoueur].visitees)
+        self.jeu_duel.ChoixVille(idjoueur, int(choix_logique_ville))
 
     def DeplacerGrenouille(self, old_position, new_position, etape=None):
         nouvelles_grenouilles = self.DirectionGrenouille(old_position, new_position)
@@ -166,10 +162,27 @@ class JeuDuelGraphique():
         self.fenetre.actualiser()
 
 
+class JeuSoloGraphique():
+    def __init__(self, villes, fenetre, jeu_solo, parametres):
+        self.villes = villes
+        self.fenetre = fenetre
+        self.jeu_solo = jeu_solo
+        self.parametres = parametres
+
+    def initJeuSolo(self):
+        pass
+
+    def initVilles(self):
+        for ville in self.villes.dict:
+            self.fenetre.afficherImage(self.villes.dict[ville][0] - (self.parametres.taille_ville/2), self.villes.dict[ville][1] - (self.parametres.taille_ville_duel/2), "Images/nenuphar.png", self.parametres.taille_ville_duel, self.parametres.taille_ville_duel)
+        self.fenetre.actualiser()
+
+
 class HeuristiqueGraphique():
-    def __init__(self, villes, menu, Heuristique, dernier_choix=None):
+    def __init__(self, villes, menu, parametres, Heuristique, dernier_choix=None):
         self.villes = villes
         self.menu = menu
+        self.parametres = parametres
         self.Heuristique = Heuristique
         self.dernier_choix = dernier_choix
         self.fenetre = self.menu.fenetre
@@ -211,4 +224,4 @@ class HeuristiqueGraphique():
             self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville + 1]][0], self.villes.dict[parcours[posville + 1]][1], "white", 5)
 
     def AfficherScoreHeuristique(self, distance):
-        self.fenetre.afficherTexte(distance, self.menu.taille_plan - (self.menu.longueur_option / 2) - 20, (self.menu.taille_plan - self.menu.hauteur_option + 7) + (self.menu.hauteur_option / 2) + 5, "#2D221B", 25)
+        self.fenetre.afficherTexte(distance, self.parametres.taille_plan - (self.parametres.longueur_option / 2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B", 25)

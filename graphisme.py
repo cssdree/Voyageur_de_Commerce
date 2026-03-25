@@ -168,8 +168,7 @@ class JeuSoloGraphique():
         self.fenetre = fenetre
         self.parametres = parametres
         self.chemins = []
-        self.cercle_ville_1 = None
-        self.cercle_ville_2 = None
+        self.cercle_ville_en_cours = None
 
     def initJeuSolo(self):
         self.fenetre.supprimerTout()
@@ -202,10 +201,8 @@ class JeuSoloGraphique():
             choix_ville_1, choix_ville_2 = self.ChoixVilles()
 
     def ChoixVilles(self):
-        if self.cercle_ville_1:
-            self.fenetre.supprimer(self.cercle_ville_1)
-        if self.cercle_ville_2:
-            self.fenetre.supprimer(self.cercle_ville_2)
+        if self.cercle_ville_en_cours:
+            self.fenetre.supprimer(self.cercle_ville_en_cours)
         choix_graphique_ville_1 = self.fenetre.attendreClic()
         if choix_graphique_ville_1.num == 3:
             return None, None
@@ -215,13 +212,12 @@ class JeuSoloGraphique():
             if choix_graphique_ville_1.num == 3:
                 return None, None
             choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, {self.villes.depart})
-        self.cercle_ville_1 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo/1.5, "white")
+        self.cercle_ville_en_cours = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo / 1.5, "white")
         choix_graphique_ville_2 = self.fenetre.attendreClic()
         choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, {self.villes.depart})
         while not choix_logique_ville_2:
             choix_graphique_ville_2 = self.fenetre.attendreClic()
             choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, {self.villes.depart})
-        self.cercle_ville_2 = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_2)][0], self.villes.dict[int(choix_logique_ville_2)][1], self.parametres.taille_ville_solo/1.5, "white")
         return choix_logique_ville_1, choix_logique_ville_2
 
     def DessinerParcours(self):

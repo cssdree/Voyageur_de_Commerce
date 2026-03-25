@@ -3,8 +3,9 @@ from tkiteasy import *
 
 
 class MenuPrincipalGraphique():
-    def __init__(self, taille_plan):
+    def __init__(self, taille_plan, taille_engrenage):
         self.taille_plan = taille_plan
+        self.taille_engrenage = taille_engrenage
         self.fenetre = ouvrirFenetre(self.taille_plan, self.taille_plan)
 
     def initMenuPrincipal(self):
@@ -13,6 +14,7 @@ class MenuPrincipalGraphique():
         except Exception:
             pass
         self.fenetre.afficherImage(0, 0, "Images/menu.png", self.taille_plan, self.taille_plan)
+        self.engrenage = self.fenetre.afficherImage(850-(self.taille_engrenage/2), 850-(self.taille_engrenage/2), "Images/engrenage.png", self.taille_engrenage, self.taille_engrenage)
 
     def ChoixMenuPrincipal(self):
         clic = self.fenetre.attendreClic()
@@ -20,7 +22,7 @@ class MenuPrincipalGraphique():
             return "Duel"
         elif clic.x > 220 and clic.x < 675 and clic.y > 510 and clic.y < 690:
             return "Solo"
-        elif clic.x > 800 and clic.y > 800:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.engrenage:
             return "Parametres"
 
 
@@ -42,12 +44,12 @@ class MenuDuelGraphique():
         self.initGrenouille()
 
     def initMenuDuel(self):
-        self.ChoixJeu = self.fenetre.afficherImage(0*self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
-        self.ChoixGreedy = self.fenetre.afficherImage(1*self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
-        self.ChoixCheapest = self.fenetre.afficherImage(2*self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
-        self.ChoixRecursif = self.fenetre.afficherImage(3*self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
-        self.ChoixDynamique = self.fenetre.afficherImage(4*self.longueur_option, 0, "Images/dynamique.png", self.longueur_option, self.hauteur_option)
-        self.Choix2OPT = self.fenetre.afficherImage(20, self.taille_plan - self.hauteur_option + 7, "Images/2_opt.png", self.longueur_option, self.hauteur_option)
+        self.choix_jeu = self.fenetre.afficherImage(0 * self.longueur_option, 0, "Images/jeu.png", self.longueur_option, self.hauteur_option)
+        self.choix_greedy = self.fenetre.afficherImage(1 * self.longueur_option, 0, "Images/greedy.png", self.longueur_option, self.hauteur_option)
+        self.choix_cheapest = self.fenetre.afficherImage(2 * self.longueur_option, 0, "Images/cheapest.png", self.longueur_option, self.hauteur_option)
+        self.choix_recursif = self.fenetre.afficherImage(3 * self.longueur_option, 0, "Images/recursif.png", self.longueur_option, self.hauteur_option)
+        self.choix_dynamique = self.fenetre.afficherImage(4 * self.longueur_option, 0, "Images/dynamique.png", self.longueur_option, self.hauteur_option)
+        self.choix_2OPT = self.fenetre.afficherImage(20, self.taille_plan - self.hauteur_option + 7, "Images/2_opt.png", self.longueur_option, self.hauteur_option)
         self.fenetre.afficherImage(self.taille_plan - self.longueur_option - 20, self.taille_plan - self.hauteur_option + 7, "Images/vide.png", self.longueur_option, self.hauteur_option)
 
     def initVilles(self):
@@ -62,17 +64,17 @@ class MenuDuelGraphique():
         clic = self.fenetre.attendreClic()
         if clic.num == 3:
             return "STOP"
-        if self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixJeu:
+        if self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_jeu:
             return "Jeu"
-        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixGreedy:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_greedy:
             return "Greedy"
-        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixCheapest:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_cheapest:
             return "Cheapest"
-        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixRecursif:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_recursif:
             return "Recursif"
-        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.ChoixDynamique:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_dynamique:
             return "Dynamique"
-        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.Choix2OPT:
+        elif self.fenetre.recupererObjet(clic.x, clic.y) == self.choix_2OPT:
             return "2OPT"
 
 

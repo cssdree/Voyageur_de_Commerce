@@ -35,7 +35,7 @@ def Duel(parametres, fenetre):
 
 
 parametres = Parametres()
-M = MenuPrincipalGraphique(parametres.taille_plan)
+M = MenuPrincipalGraphique(parametres.taille_plan, parametres.taille_engrenage)
 while True:
     M.initMenuPrincipal()
     choix_principal = M.ChoixMenuPrincipal()
@@ -44,3 +44,4 @@ while True:
     #elif choix_principal == "Solo":
     elif choix_principal == "Parametres":
         parametres.initParametres()
+        parametres.ChoixParametres()

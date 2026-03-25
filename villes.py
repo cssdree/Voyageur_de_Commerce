@@ -70,7 +70,7 @@ def VilleDansRondins(x, y):
 def CreationAleatoireVilles(parametres):
     dict_villes = {}
     v = 0
-    while len(dict_villes) < parametres.nbv:
+    while len(dict_villes) < parametres.nbv_duel:
         x = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
         y = round(random.uniform(parametres.taille_ville, parametres.taille_plan-parametres.taille_ville), 3)
         coord = (x, y)

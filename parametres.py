@@ -6,7 +6,7 @@ class Parametres():
         self.nbj = 2
         self.nbv_duel = 10
         self.nbv_solo = 20
-        self.taille_plan = 600
+        self.taille_plan = 900
         self.taille_ville_duel = int(self.taille_plan*110/900)
         self.taille_ville_solo = int(self.taille_plan*50/900)
         self.hauteur_option = int(self.taille_plan*70/900)

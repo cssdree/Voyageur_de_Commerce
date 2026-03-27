@@ -14,13 +14,13 @@ class MenuPrincipalGraphique():
         except Exception:
             pass
         self.fenetre.afficherImage(0, 0, "Images/menu.png", self.taille_plan, self.taille_plan)
-        self.engrenage = self.fenetre.afficherImage(850-(self.taille_engrenage/2), 850-(self.taille_engrenage/2), "Images/engrenage.png", self.taille_engrenage, self.taille_engrenage)
+        self.engrenage = self.fenetre.afficherImage(int(self.taille_plan*850/900)-(self.taille_engrenage/2), int(self.taille_plan*850/900)-(self.taille_engrenage/2), "Images/engrenage.png", self.taille_engrenage, self.taille_engrenage)
 
     def ChoixMenuPrincipal(self):
         clic = self.fenetre.attendreClic()
-        if clic.x > 220 and clic.x < 675 and clic.y > 220 and clic.y < 400:
+        if clic.x > int(self.taille_plan*220/900) and clic.x < int(self.taille_plan*675/900) and clic.y > int(self.taille_plan*220/900) and clic.y < int(self.taille_plan*400/900):
             return "Duel"
-        elif clic.x > 220 and clic.x < 675 and clic.y > 510 and clic.y < 690:
+        elif clic.x > int(self.taille_plan*220/900) and clic.x < int(self.taille_plan*675/900) and clic.y > int(self.taille_plan*510/900) and clic.y < int(self.taille_plan*690/900):
             return "Solo"
         elif self.fenetre.recupererObjet(clic.x, clic.y) == self.engrenage:
             return "Parametres"
@@ -40,13 +40,13 @@ class MenuDuelGraphique():
         self.initGrenouille()
 
     def initMenuDuel(self):
-        self.choix_jeu = self.fenetre.afficherImage(0 * self.parametres.longueur_option, 0, "Images/jeu.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.choix_greedy = self.fenetre.afficherImage(1 * self.parametres.longueur_option, 0, "Images/greedy.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.choix_cheapest = self.fenetre.afficherImage(2 * self.parametres.longueur_option, 0, "Images/cheapest.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.choix_recursif = self.fenetre.afficherImage(3 * self.parametres.longueur_option, 0, "Images/recursif.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.choix_dynamique = self.fenetre.afficherImage(4 * self.parametres.longueur_option, 0, "Images/dynamique.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.choix_2OPT = self.fenetre.afficherImage(20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/2_opt.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - 20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_jeu = self.fenetre.afficherImage(0*self.parametres.longueur_option, 0, "Images/jeu.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_greedy = self.fenetre.afficherImage(1*self.parametres.longueur_option, 0, "Images/greedy.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_cheapest = self.fenetre.afficherImage(2*self.parametres.longueur_option, 0, "Images/cheapest.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_recursif = self.fenetre.afficherImage(3*self.parametres.longueur_option, 0, "Images/recursif.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_dynamique = self.fenetre.afficherImage(4*self.parametres.longueur_option, 0, "Images/dynamique.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.choix_2OPT = self.fenetre.afficherImage(int(self.parametres.taille_plan*20/900), self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900), "Images/2_opt.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - int(self.parametres.taille_plan*20/900), self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900), "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
 
     def initVilles(self):
         for ville in self.villes.dict:
@@ -88,9 +88,9 @@ class JeuDuelGraphique():
         self.menu_duel.initPlateau()
         self.fenetre.supprimer(self.menu_duel.grenouille)
         self.grenouille = self.fenetre.afficherImage(self.villes.dict[self.villes.depart][0] - (self.parametres.taille_grenouille/2), self.villes.dict[self.villes.depart][1] - (self.parametres.taille_grenouille/1.5), "Images/assis_face.png", self.parametres.taille_grenouille, self.parametres.taille_grenouille)
-        self.fenetre.afficherImage(20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.score_joueur_0 = self.fenetre.afficherTexte("0", 20 + (self.parametres.longueur_option/2), (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
-        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
+        self.fenetre.afficherImage(int(self.parametres.taille_plan*20/900), self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900), "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.score_joueur_0 = self.fenetre.afficherTexte("0", int(self.parametres.taille_plan*20/900) + (self.parametres.longueur_option/2), (self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900)) + (self.parametres.hauteur_option/2) + int(self.parametres.taille_plan*5/900), "#2D221B", int(self.parametres.taille_plan*25/900))
+        self.score_joueur_1 = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - int(self.parametres.taille_plan*20/900), (self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900)) + (self.parametres.hauteur_option/2) + int(self.parametres.taille_plan*5/900), "#2D221B", int(self.parametres.taille_plan*25/900))
 
     def LancerJeuDuel(self):
         for idjoueur in range(self.jeu_duel.nbjoueur):
@@ -173,17 +173,17 @@ class JeuSoloGraphique():
     def initJeuSolo(self):
         self.fenetre.supprimerTout()
         self.fenetre.afficherImage(0, 0, "Images/fond.png", self.parametres.taille_plan, self.parametres.taille_plan)
-        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - 20, self.parametres.taille_plan - self.parametres.hauteur_option + 7, "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
-        self.distance = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20, (self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option / 2) + 5, "#2D221B",25)
+        self.fenetre.afficherImage(self.parametres.taille_plan - self.parametres.longueur_option - int(self.parametres.taille_plan*20/900), self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900), "Images/vide.png", self.parametres.longueur_option, self.parametres.hauteur_option)
+        self.distance = self.fenetre.afficherTexte("0", self.parametres.taille_plan - (self.parametres.longueur_option/2) - int(self.parametres.taille_plan*20/900), (self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900)) + (self.parametres.hauteur_option/2) + int(self.parametres.taille_plan*5/900), "#2D221B", int(self.parametres.taille_plan*25/900))
         self.initVilles()
 
     def initVilles(self):
         for ville in self.villes.dict:
             if ville == self.villes.depart:
-                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
-                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
-                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
-                self.fenetre.dessinerLigne(self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=3)
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, "#2D221B", ep=int(self.parametres.taille_plan*3/900))
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=int(self.parametres.taille_plan*3/900))
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=int(self.parametres.taille_plan*3/900))
+                self.fenetre.dessinerLigne(self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]-self.parametres.taille_ville_solo/2, self.villes.dict[ville][0]+self.parametres.taille_ville_solo/2, self.villes.dict[ville][1]+self.parametres.taille_ville_solo/2, "#2D221B", ep=int(self.parametres.taille_plan*3/900))
             self.fenetre.afficherImage(self.villes.dict[ville][0] - (self.parametres.taille_ville_solo/2), self.villes.dict[ville][1] - (self.parametres.taille_ville_solo/2), "Images/nenuphar.png", self.parametres.taille_ville_solo, self.parametres.taille_ville_solo)
         self.fenetre.actualiser()
 
@@ -212,7 +212,7 @@ class JeuSoloGraphique():
             if choix_graphique_ville_1.num == 3:
                 return None, None
             choix_logique_ville_1 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_1.x, choix_graphique_ville_1.y, {self.villes.depart})
-        self.cercle_ville_en_cours = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo / 1.5, "white")
+        self.cercle_ville_en_cours = self.fenetre.dessinerCercle(self.villes.dict[int(choix_logique_ville_1)][0], self.villes.dict[int(choix_logique_ville_1)][1], self.parametres.taille_ville_solo/1.5, "white")
         choix_graphique_ville_2 = self.fenetre.attendreClic()
         choix_logique_ville_2 = self.villes.TrouverVilleAcceptable(choix_graphique_ville_2.x, choix_graphique_ville_2.y, {self.villes.depart})
         while not choix_logique_ville_2:
@@ -226,7 +226,7 @@ class JeuSoloGraphique():
                 self.fenetre.supprimer(chemin)
             self.chemins = []
         for posville in range(len(self.parcours)-1):
-            chemin = self.fenetre.dessinerLigne(self.villes.dict[self.parcours[posville]][0], self.villes.dict[self.parcours[posville]][1], self.villes.dict[self.parcours[posville+1]][0], self.villes.dict[self.parcours[posville+1]][1], "white", 5)
+            chemin = self.fenetre.dessinerLigne(self.villes.dict[self.parcours[posville]][0], self.villes.dict[self.parcours[posville]][1], self.villes.dict[self.parcours[posville+1]][0], self.villes.dict[self.parcours[posville+1]][1], "white", int(self.parametres.taille_plan*5/900))
             self.chemins.append(chemin)
 
 
@@ -272,11 +272,11 @@ class HeuristiqueGraphique():
         self.AfficherScoreHeuristique(distance)
 
     def AfficherScoreHeuristique(self, distance):
-        self.fenetre.afficherTexte(distance, self.parametres.taille_plan - (self.parametres.longueur_option/2) - 20,(self.parametres.taille_plan - self.parametres.hauteur_option + 7) + (self.parametres.hauteur_option/2) + 5, "#2D221B", 25)
+        self.fenetre.afficherTexte(distance, self.parametres.taille_plan - (self.parametres.longueur_option/2) - int(self.parametres.taille_plan*20/900),(self.parametres.taille_plan - self.parametres.hauteur_option + int(self.parametres.taille_plan*7/900)) + (self.parametres.hauteur_option/2) + int(self.parametres.taille_plan*5/900), "#2D221B", int(self.parametres.taille_plan*25/900))
 
     def DessinerParcours(self, parcours):
-        for posville in range(len(parcours) - 1):
-            self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville+1]][0], self.villes.dict[parcours[posville+1]][1], "white", 5)
+        for posville in range(len(parcours)-1):
+            self.fenetre.dessinerLigne(self.villes.dict[parcours[posville]][0], self.villes.dict[parcours[posville]][1], self.villes.dict[parcours[posville+1]][0], self.villes.dict[parcours[posville+1]][1], "white", int(self.parametres.taille_plan*5/900))
 
 
 def PermuterVilles(parcours, ville_1, ville_2):

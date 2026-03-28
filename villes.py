@@ -10,6 +10,9 @@ class Villes():
         self.villes_initiales_possibles = set(self.dict.keys()) - {self.depart}
 
     def TrouverVilleAcceptable(self, x, y, visitees):
+        """
+        Vérifie si un clic (x,y) correspond à une ville non visitée.
+        """
         for idville in self.dict:
             if (math.dist((x,y), self.dict[idville]) < (self.taille_ville/2.5)):
                 if idville not in visitees:
@@ -18,6 +21,9 @@ class Villes():
         return False
 
     def TrouverPlusProcheVille(self, ville_actuelle, villes_possibles):
+        """
+        Recherche la ville la plus proche parmi une liste.
+        """
         nearest = random.choice(list(villes_possibles))
         for idville in villes_possibles:
             if math.dist(self.dict[ville_actuelle], self.dict[idville]) < math.dist(self.dict[ville_actuelle], self.dict[nearest]):
@@ -25,16 +31,25 @@ class Villes():
         return nearest
 
     def DistanceTotaleParcours(self, parcours):
+        """
+        Calcule la longueur cumulée d'une suite de villes.
+        """
         distance = 0
         for v in range(1, len(parcours)):
             distance += math.dist(self.dict[parcours[v]], self.dict[parcours[v-1]])
         return distance
 
     def Distance(self, idville1, idville2):
+        """
+        Calcule la distance euclidienne entre deux villes.
+        """
         return math.dist(self.dict[idville1], self.dict[idville2])
 
 
 def VilleAcceptable(x, y, dict_villes, taille_ville, taille_plan, hauteur_option, type_jeu):
+    """
+    Détermine si des coordonnées sont valides pour placer une nouvelle ville lors de la génération.
+    """
     coords = set(dict_villes.values())
     if type_jeu == "Duel" and VilleDansOptions(y, hauteur_option):
         return False
@@ -49,6 +64,9 @@ def VilleAcceptable(x, y, dict_villes, taille_ville, taille_plan, hauteur_option
 
 
 def VilleDansTriangle(ville, a, b, c):
+    """
+    Vérifie si un point est à l'intérieur d'un triangle défini par 3 sommets.
+    """
     def signe(p1, p2, p3):
         return (p1[0]-p3[0])*(p2[1]-p3[1])-(p2[0]-p3[0])*(p1[1]-p3[1])
     d1 = signe(ville, a, b)
@@ -60,14 +78,23 @@ def VilleDansTriangle(ville, a, b, c):
 
 
 def VilleDansOptions(y, hauteur_option):
+    """
+    Vérifie si la coordonnée y empiète sur le menu supérieur.
+    """
     return y < hauteur_option*1.5
 
 
 def VilleDansRondins(x, y, taille_plan):
+    """
+    Vérifie si des coordonnée empiète sur le rondin en bas à droite.
+    """
     return (x > int(taille_plan*690/900)) and (y > int(taille_plan*790/900))
 
 
 def CreationAleatoireVilles(nbv, taille_ville, taille_plan, hauteur_option, type_jeu):
+    """
+    Génère aléatoirement un ensemble de villes respectant les contraintes de position.
+    """
     dict_villes = {}
     v = 0
     while len(dict_villes) < nbv:

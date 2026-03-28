@@ -2,6 +2,9 @@ from joueurs import Joueur
 
 
 class JeuDuelLogique():
+    """
+    Gère la logique de tour par tour et le calcul du gagnant.
+    """
     def __init__(self, villes, nbjoueur):
         self.nbjoueur = nbjoueur
         self.villes = villes

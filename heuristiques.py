@@ -2,6 +2,9 @@ import math
 
 
 def HeuristiqueGreedy(villes):
+    """
+    Construit un parcours en choisissant toujours la ville la plus proche non visitée.
+    """
     parcours_greedy = [villes.depart]
     ville_actuelle = villes.depart
     villes_possibles = villes.villes_initiales_possibles
@@ -15,6 +18,9 @@ def HeuristiqueGreedy(villes):
 
 
 def HeuristiqueCheapestInsertion(villes):
+    """
+    Construit un parcours en insérant progressivement les villes là où elles augmentent le moins la distance totale.
+    """
     villes_possibles = villes.villes_initiales_possibles
     premiere = villes.TrouverPlusProcheVille(villes.depart, villes_possibles)
     parcours_cheap = [villes.depart, premiere, villes.depart]
@@ -43,6 +49,9 @@ class HeuristiqueRecursif():
         self.meilleur_parcours_recursif = ([], math.inf)
 
     def RechercheRecursive(self, villes_possibles, parcours_recursif, distance_recursive):
+        """
+        Explore toutes les combinaisons possibles de chemins.
+        """
         if distance_recursive >= self.meilleur_parcours_recursif[1]:
             return
         if len(villes_possibles) == 0:
@@ -55,11 +64,17 @@ class HeuristiqueRecursif():
             self.RechercheRecursive(villes_possibles-{idville}, parcours_recursif+[idville], nouvelle_distance_recursive)
 
     def ResultatRecursif(self):
+        """
+        Lance la recherche et renvoie le parcours optimal.
+        """
         self.RechercheRecursive(self.villes.villes_initiales_possibles, [self.villes.depart], 0)
         return self.meilleur_parcours_recursif[0]+[self.villes.depart]
 
 
 def Heuristique2OPT(villes, parcours):
+    """
+    Améliore un parcours existant en décroisant des chemins.
+    """
     n_unique = len(parcours)-1
     amelioration = True
     while amelioration:
@@ -79,36 +94,46 @@ def Heuristique2OPT(villes, parcours):
 
 
 class HeuristiqueDynamique:
-  def __init__(self, villes):
-    self.villes = villes
-    self.historique = {}
+    def __init__(self, villes):
+        self.villes = villes
+        self.historique = {}
 
-  def RechercheRecursive(self, derniere_ville, villes_a_visiter):
-    cle = (villes_a_visiter, derniere_ville)
-    if cle in self.historique:
-      return self.historique[cle]
-    if len(villes_a_visiter) == 1:
-      distance = self.villes.Distance(self.villes.depart, derniere_ville)
-      parcours = [self.villes.depart, derniere_ville]
-      resultat = (distance, parcours)
-    else:
-      resultat = self.RechercheMeilleurePrecedente(derniere_ville, villes_a_visiter - {derniere_ville})
-    self.historique[cle] = resultat
-    return resultat
+    def RechercheRecursive(self, derniere_ville, villes_a_visiter):
+        """
+        Calcul du meilleur chemin pour arriver à "derniere_ville" en visitant "villes_a_visiter".
+        """
+        cle = (villes_a_visiter, derniere_ville)
+        if cle in self.historique:
+            return self.historique[cle]
+        if len(villes_a_visiter) == 1:
+            distance = self.villes.Distance(self.villes.depart, derniere_ville)
+            parcours = [self.villes.depart, derniere_ville]
+            resultat = (distance, parcours)
+        else:
+            #Recherche quelle est la meilleure ville à visiter juste avant "derniere_ville"
+            resultat = self.RechercheMeilleurePrecedente(derniere_ville, villes_a_visiter - {derniere_ville})
+        self.historique[cle] = resultat
+        return resultat
 
-  def RechercheMeilleurePrecedente(self, ville_reference, villes_restantes):
-    meilleure_distance = float('inf')
-    meilleur_parcours = None
-    for precedente in villes_restantes:
-      distance, parcours = self.RechercheRecursive(precedente, villes_restantes)
-      distance_totale = distance + self.villes.Distance(precedente, ville_reference)
-      if distance_totale < meilleure_distance:
-        meilleure_distance = distance_totale
-        meilleur_parcours = parcours[:]
-        meilleur_parcours.append(ville_reference)
-    return meilleure_distance, meilleur_parcours
+    def RechercheMeilleurePrecedente(self, ville_reference, villes_restantes):
+        """
+        Trouve quelle ville précède le mieux la "ville_reference" parmi "villes_restantes".
+        """
+        meilleure_distance = math.inf
+        meilleur_parcours = None
+        for precedente in villes_restantes:
+            distance, parcours = self.RechercheRecursive(precedente, villes_restantes)
+            distance_totale = distance + self.villes.Distance(precedente, ville_reference)
+            if distance_totale < meilleure_distance:
+                meilleure_distance = distance_totale
+                meilleur_parcours = parcours[:]
+                meilleur_parcours.append(ville_reference)
+        return meilleure_distance, meilleur_parcours
 
-  def ResultatRecursif(self):
-    toutes_les_villes = frozenset(self.villes.dict.keys())
-    (_, meilleur_parcours) = self.RechercheMeilleurePrecedente(self.villes.depart, toutes_les_villes-{self.villes.depart})
-    return meilleur_parcours
+    def ResultatRecursif(self):
+        """
+        Lance la recherche et renvoie le parcours optimal.
+        """
+        toutes_les_villes = frozenset(self.villes.dict.keys()) #frozenset pour l'utiliser en tant que clé de historique
+        (_, meilleur_parcours) = self.RechercheMeilleurePrecedente(self.villes.depart, toutes_les_villes-{self.villes.depart})
+        return meilleur_parcours

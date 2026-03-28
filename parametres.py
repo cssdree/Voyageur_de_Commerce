@@ -2,6 +2,9 @@ from tkiteasy import *
 
 
 class Parametres():
+    """
+    Gère les constantes du programme et l'interface de réglage du nombre de villes.
+    """
     def __init__(self):
         self.nbj = 2
         self.nbv_duel = 10
@@ -18,6 +21,9 @@ class Parametres():
         self.catalogue_solo = {"15":(int(self.taille_plan*553/900), int(self.taille_plan*580/900)), "20":(int(self.taille_plan*553/900), int(self.taille_plan*648/900)), "30":(int(self.taille_plan*553/900), int(self.taille_plan*714/900))}
 
     def initParametres(self):
+        """
+        Crée la fenêtre de réglages et affiche les éléments graphiques initiaux.
+        """
         self.fenetre_param = ouvrirFenetre(self.taille_plan, self.taille_plan)
         self.fenetre_param.afficherImage(0, 0, "Images/parametres.png", self.taille_plan, self.taille_plan)
         self.disque_duel = self.fenetre_param.dessinerDisque(self.catalogue_duel[str(self.nbv_duel)][0], self.catalogue_duel[str(self.nbv_duel)][1], self.rayon_parametre, "#2D221B")
@@ -25,6 +31,9 @@ class Parametres():
         self.engrenage = self.fenetre_param.afficherImage(int(self.taille_plan*850/900) - (self.taille_engrenage/2), int(self.taille_plan*850/900) - (self.taille_engrenage/2), "Images/engrenage.png", self.taille_engrenage, self.taille_engrenage)
 
     def ChoixParametres(self):
+        """
+        Met à jour les variables en fonction du choix de l'utilisateur.
+        """
         clic = self.fenetre_param.attendreClic()
         while self.fenetre_param.recupererObjet(clic.x, clic.y) != self.engrenage:
             choix_nbv_duel = self.ChoixNbvDuel(clic.x, clic.y)
@@ -40,6 +49,9 @@ class Parametres():
         return
 
     def ChoixNbvDuel(self, x, y):
+        """
+        Détermine si un clic (x, y) se trouve dans l'un des choix du mode Duel.
+        """
         if x > int(self.taille_plan*275/900) and x < int(self.taille_plan*375/900) and y > int(self.taille_plan*200/900) and y < int(self.taille_plan*235/900):
             return "5"
         elif x > int(self.taille_plan*275/900) and x < int(self.taille_plan*375/900) and y > int(self.taille_plan*250/900) and y < int(self.taille_plan*285/900):
@@ -58,6 +70,9 @@ class Parametres():
             return "12"
 
     def ChoixNbvSolo(self, x, y):
+        """
+        Détermine si un clic (x, y) se trouve dans l'un des choix du mode Solo.
+        """
         if x > int(self.taille_plan*385/900) and x < int(self.taille_plan*515/900) and y > int(self.taille_plan*560/900) and y < int(self.taille_plan*605/900):
             return "15"
         elif x > int(self.taille_plan*385/900) and x < int(self.taille_plan*515/900) and y > int(self.taille_plan*625/900) and y < int(self.taille_plan*675/900):

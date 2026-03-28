@@ -1,6 +1,9 @@
 
 
 class Joueur():
+    """
+    Gère l'état individuel d'un joueur.
+    """
     def __init__(self, depart):
         self.depart = depart
         self.parcours = [self.depart]

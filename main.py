@@ -6,6 +6,10 @@ from graphisme import *
 
 
 def Duel(parametres, fenetre):
+    """
+    Gère le déroulement complet du jeu Duel.
+    Configure la carte, affiche le menu de sélection et lance le jeu Duel ou les heuristiques.
+    """
     villes = CreationAleatoireVilles(parametres.nbv_duel, parametres.taille_ville_duel, parametres.taille_plan, parametres.hauteur_option, "Duel")
     MD = MenuDuelGraphique(villes, fenetre, parametres)
     MD.initPlateau()
@@ -38,12 +42,16 @@ def Duel(parametres, fenetre):
 
 
 def Solo(parametres, fenetre):
+    """
+    Gère le déroulement complet du jeu Solo où l'utilisateur tente d'optimiser lui-même un parcours.
+    """
     villes = CreationAleatoireVilles(parametres.nbv_solo, parametres.taille_ville_solo, parametres.taille_plan, parametres.hauteur_option, "Solo")
     JG = JeuSoloGraphique(villes, fenetre, parametres)
     JG.initJeuSolo()
     JG.LancerJeuSolo()
 
 
+#Boucle infinie pour permettre de revenir au menu principal avec un clic droit après chaque mode de jeu.
 parametres = Parametres()
 M = MenuPrincipalGraphique(parametres.taille_plan, parametres.taille_engrenage)
 while True:

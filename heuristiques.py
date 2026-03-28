@@ -117,7 +117,7 @@ class HeuristiqueDynamique:
 
     def RechercheMeilleurePrecedente(self, ville_reference, villes_restantes):
         """
-        Trouve quelle ville précède le mieux la "ville_reference" parmi "villes_restantes".
+        Trouve quelle ville précède le mieux "ville_reference" parmi "villes_restantes".
         """
         meilleure_distance = math.inf
         meilleur_parcours = None
